@@ -14,62 +14,104 @@ The module path is `github.com/charmbracelet/crush`.
 ## Architecture
 
 ```
-main.go                            CLI entry point (cobra via internal/cmd)
-internal/
-  app/app.go                       Top-level wiring: DB, config, agents, LSP, MCP, events
-  cmd/                             CLI commands (root, run, login, models, stats, sessions)
-  config/
-    config.go                      Config struct, context file paths, agent definitions
-    load.go                        crush.json loading and validation
-    provider.go                    Provider configuration and model resolution
-  agent/
-    agent.go                       SessionAgent: runs LLM conversations per session
+main.go                            CLI entry point (cobra via engine/cmd)
+kernel/
+  kernel.go                        Public interface between UI and engine
+engine/
+  agent/                           Agent implementation
+    agent.go                       SessionAgent: runs LLM conversations
     coordinator.go                 Coordinator: manages named agents ("coder", "task")
     prompts.go                     Loads Go-template system prompts
-    templates/                     System prompt templates (coder.md.tpl, task.md.tpl, etc.)
+    templates/                     System prompt templates
     tools/                         All built-in tools (bash, edit, view, grep, glob, etc.)
-      mcp/                         MCP client integration
-  session/session.go               Session CRUD backed by SQLite
+  app/app.go                       Top-level wiring: DB, config, agents, LSP, MCP, events
+  adapter/
+    kernel_adapter.go              Kernel implementation wrapping agent/coordinator
+    remote/kernel.go               RemoteKernel for client/server mode
+  workspace/
+    kernel_workspace.go           Workspace exposing kernel.Kernel
+    app_workspace.go              Local workspace implementation
+    client_workspace.go            Remote workspace implementation
+  cmd/                             CLI commands (root, run, login, models, stats, sessions)
+  commands/                        REPL commands
+  config/                          Config struct, crush.json loading, provider config
+  session/                         Session CRUD backed by SQLite
   message/                         Message model and content types
   db/                              SQLite via sqlc, with migrations
     sql/                           Raw SQL queries (consumed by sqlc)
     migrations/                    Schema migrations
   lsp/                             LSP client manager, auto-discovery, on-demand startup
-  ui/                              Bubble Tea v2 TUI (see internal/ui/AGENTS.md)
   permission/                      Tool permission checking and allow-lists
   skills/                          Skill file discovery and loading
   shell/                           Bash command execution with background job support
   event/                           Telemetry (PostHog)
-  pubsub/                          Internal pub/sub for cross-component messaging
+  pubsub/                          Internal pub/sub for agent-to-kernel communication
   filetracker/                     Tracks files touched per session
   history/                         Prompt history
+  mcp/                             MCP client integration
+  client/                          HTTP client SDK for server mode
+  server/                          Server implementation
+  proto/                           Protocol definitions
+  backend/                         Backend implementation
+  oauth/                           OAuth integration (Copilot, Hyper)
+  update/                          Update checker
+  version/                         Version info
+  projects/                        Project management
+  log/                             Logging
+  home/                            Home directory utilities
+  env/                             Environment utilities
+  fsext/                           Filesystem extensions
+  diff/                            Diff utilities
+  format/                          Formatting utilities
+  ansiext/                         ANSI extensions
+  stringext/                       String extensions
+  filepathext/                     Filepath extensions
+  csync/                           Concurrent sync utilities
+  swagger/                         Swagger docs
+ui/
+  ui/                              Bubble Tea v2 TUI (see ui/ui/AGENTS.md)
 ```
+
+### Kernel Interface (`kernel/`)
+
+The `kernel` package defines the public interface between the UI layer and the
+agent/coordinator engine. This decouples the UI from any specific engine
+implementation:
+
+- **`kernel.Kernel`**: Main interface providing message operations, session
+  management, agent control, and event subscriptions
+- **Event types**: `Event[T]` wraps payloads with event types for subscriptions
+- **Content types**: `Message`, `Session`, `PermissionRequest`, etc.
+
+Two implementations exist:
+- **`adapter.KernelAdapter`**: Wraps in-process `app.App` for local mode
+- **`adapter/remote.RemoteKernel`**: Wraps `client.Client` for server mode
 
 ### Key Dependency Roles
 
 - **`charm.land/fantasy`**: LLM provider abstraction layer. Handles protocol
-  differences between Anthropic, OpenAI, Gemini, etc. Used in `internal/app`
-  and `internal/agent`.
+  differences between Anthropic, OpenAI, Gemini, etc. Used in `engine/app`
+  and `engine/agent`.
 - **`charm.land/bubbletea/v2`**: TUI framework powering the interactive UI.
 - **`charm.land/lipgloss/v2`**: Terminal styling.
 - **`charm.land/glamour/v2`**: Markdown rendering in the terminal.
 - **`charm.land/catwalk`**: Snapshot/golden-file testing for TUI components.
-- **`sqlc`**: Generates Go code from SQL queries in `internal/db/sql/`.
+- **`sqlc`**: Generates Go code from SQL queries in `engine/db/sql/`.
 
 ### Key Patterns
 
 - **Config is a Service**: accessed via `config.Service`, not global state.
 - **Tools are self-documenting**: each tool has a `.go` implementation and a
-  `.md` description file in `internal/agent/tools/`.
-- **System prompts are Go templates**: `internal/agent/templates/*.md.tpl`
+  `.md` description file in `engine/agent/tools/.
+- **System prompts are Go templates**: `engine/agent/templates/*.md.tpl`
   with runtime data injected.
 - **Context files**: Crush reads AGENTS.md, CRUSH.md, CLAUDE.md, GEMINI.md
   (and `.local` variants) from the working directory for project-specific
   instructions.
-- **Persistence**: SQLite + sqlc. All queries live in `internal/db/sql/`,
-  generated code in `internal/db/`. Migrations in `internal/db/migrations/`.
-- **Pub/sub**: `internal/pubsub` for decoupled communication between agent,
-  UI, and services.
+- **Persistence**: SQLite + sqlc. All queries live in `engine/db/sql/`,
+  generated code in `engine/db/`. Migrations in `engine/db/migrations/`.
+- **Pub/sub**: `engine/pubsub` for agent-to-kernel communication (events are
+  translated to kernel events for UI consumption).
 - **CGO disabled**: builds with `CGO_ENABLED=0` and
   `GOEXPERIMENT=greenteagc`.
 
