@@ -720,3 +720,11 @@ func (a *Adapter) ParseAgentToolSessionID(sessionID string) (messageID string, t
 func (a *Adapter) Shutdown() {
 	a.lspManager.KillAll(context.Background())
 }
+
+// ------------------------------------------------------------------------
+// Configuration
+// ------------------------------------------------------------------------
+
+func (a *Adapter) Config() kernel.ConfigProvider {
+	return &ConfigAdapter{cfg: a.store.Config()}
+}

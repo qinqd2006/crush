@@ -672,6 +672,13 @@ type Kernel interface {
 
 	// Shutdown gracefully shuts down the kernel.
 	Shutdown()
+
+	// ------------------------------------------------------------------------
+	// Configuration
+	// ------------------------------------------------------------------------
+
+	// Config returns the current configuration.
+	Config() ConfigProvider
 }
 
 // MCPResourceContents holds the contents of an MCP resource.

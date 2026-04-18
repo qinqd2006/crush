@@ -47,6 +47,32 @@ func NewRemoteKernel(c *client.Client, workspaceID string) kernel.Kernel {
 }
 
 // ============================================================================
+// Configuration
+// ============================================================================
+
+// remoteConfigAdapter is a stub ConfigProvider for RemoteKernel.
+// In client/server mode, config is managed server-side.
+type remoteConfigAdapter struct{}
+
+func (r *remoteConfigAdapter) Get() *kernel.Config        { return nil }
+func (r *remoteConfigAdapter) GetPreferredModel(scope string) kernel.ModelConfig {
+	return kernel.ModelConfig{}
+}
+func (r *remoteConfigAdapter) SetPreferredModel(scope string, model kernel.ModelConfig) error {
+	return nil
+}
+func (r *remoteConfigAdapter) GetModelInfo(providerID, modelID string) kernel.ModelInfo {
+	return kernel.ModelInfo{Name: "Unknown Model"}
+}
+func (r *remoteConfigAdapter) GetProviderInfo(providerID string) kernel.ProviderInfo {
+	return kernel.ProviderInfo{Name: providerID}
+}
+
+func (k *RemoteKernel) Config() kernel.ConfigProvider {
+	return &remoteConfigAdapter{}
+}
+
+// ============================================================================
 // Lifecycle
 // ============================================================================
 

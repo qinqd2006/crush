@@ -8,6 +8,7 @@ import (
 	tea "charm.land/bubbletea/v2"
 	"github.com/atotto/clipboard"
 	"github.com/mosaic2025002/crush/engine/config"
+	"github.com/mosaic2025002/crush/kernel"
 	"github.com/mosaic2025002/crush/ui/styles"
 	"github.com/mosaic2025002/crush/ui/util"
 	"github.com/mosaic2025002/crush/engine/workspace"
@@ -29,6 +30,23 @@ type Common struct {
 // Config returns the pure-data configuration associated with this [Common] instance.
 func (c *Common) Config() *config.Config {
 	return c.Workspace.Config()
+}
+
+// Kernel returns the underlying kernel.Kernel instance, enabling kernel-based
+// access for code that needs to work with kernel types. Returns nil if the
+// workspace does not expose a kernel.
+func (c *Common) Kernel() kernel.Kernel {
+	return c.Workspace.Kernel()
+}
+
+// KernelConfig returns the kernel configuration provider. This provides access
+// to the configuration through the kernel interface. For full config access,
+// use Config() which returns the engine config.
+func (c *Common) KernelConfig() kernel.ConfigProvider {
+	if k := c.Workspace.Kernel(); k != nil {
+		return k.Config()
+	}
+	return nil
 }
 
 // DefaultCommon returns the default common UI configurations.
