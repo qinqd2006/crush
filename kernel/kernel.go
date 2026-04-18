@@ -460,6 +460,16 @@ func (m *Message) BinaryContents() []BinaryContent {
 
 // IsImage returns true if the message has image content.
 func (m *Message) IsImage() bool {
+	for _, part := range m.Parts {
+		if _, ok := part.(ImageURLContent); ok {
+			return true
+		}
+		if bc, ok := part.(BinaryContent); ok {
+			if len(bc.MIMEType) >= 6 && bc.MIMEType[:6] == "image/" {
+				return true
+			}
+		}
+	}
 	return false
 }
 
