@@ -553,6 +553,21 @@ func (c *ConfigAdapter) Get() *kernel.Config {
 	return nil
 }
 
+func (c *ConfigAdapter) GetModelInfo(providerID, modelID string) kernel.ModelInfo {
+	model := c.cfg.GetModel(providerID, modelID)
+	if model == nil {
+		return kernel.ModelInfo{Name: "Unknown Model"}
+	}
+	return kernel.ModelInfo{Name: model.Name}
+}
+
+func (c *ConfigAdapter) GetProviderInfo(providerID string) kernel.ProviderInfo {
+	if providerConfig, ok := c.cfg.Providers.Get(providerID); ok {
+		return kernel.ProviderInfo{Name: providerConfig.Name}
+	}
+	return kernel.ProviderInfo{Name: providerID}
+}
+
 func (c *ConfigAdapter) GetPreferredModel(scope string) kernel.ModelConfig {
 	return kernel.ModelConfig{}
 }

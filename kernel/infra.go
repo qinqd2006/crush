@@ -267,12 +267,28 @@ type ConfigProvider interface {
 
 	// SetPreferredModel sets the preferred model for a scope.
 	SetPreferredModel(scope string, model ModelConfig) error
+
+	// GetModelInfo returns basic model information.
+	GetModelInfo(providerID, modelID string) ModelInfo
+
+	// GetProviderInfo returns basic provider information.
+	GetProviderInfo(providerID string) ProviderInfo
 }
 
 // Config holds the application configuration.
 type Config struct {
 	// Add configuration fields as needed
 	// This will be populated from crush.json
+}
+
+// ModelInfo holds basic model information.
+type ModelInfo struct {
+	Name string
+}
+
+// ProviderInfo holds basic provider information.
+type ProviderInfo struct {
+	Name string
 }
 
 // VariableResolver defines the interface for resolving config variables.

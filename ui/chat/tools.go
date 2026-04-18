@@ -16,6 +16,7 @@ import (
 	"github.com/mosaic2025002/crush/engine/fsext"
 	"github.com/mosaic2025002/crush/engine/message"
 	"github.com/mosaic2025002/crush/engine/stringext"
+	"github.com/mosaic2025002/crush/kernel"
 	"github.com/mosaic2025002/crush/ui/anim"
 	"github.com/mosaic2025002/crush/ui/common"
 	"github.com/mosaic2025002/crush/ui/styles"
@@ -206,61 +207,81 @@ func newBaseToolMessageItem(
 func NewToolMessageItem(
 	sty *styles.Styles,
 	messageID string,
-	toolCall message.ToolCall,
-	result *message.ToolResult,
+	toolCall kernel.ToolCallContent,
+	result *kernel.ToolResultContent,
 	canceled bool,
 ) ToolMessageItem {
+	// Convert kernel types to engine types for internal use
+	engineToolCall := message.ToolCall{
+		ID:               toolCall.ID,
+		Name:             toolCall.Name,
+		Input:            toolCall.Input,
+		ProviderExecuted: toolCall.ProviderExecuted,
+		Finished:         toolCall.Finished,
+	}
+	var engineResult *message.ToolResult
+	if result != nil {
+		engineResult = &message.ToolResult{
+			ToolCallID: result.ToolCallID,
+			Name:       result.Name,
+			Content:    result.Content,
+			Data:       string(result.Data),
+			MIMEType:   result.MIMEType,
+			Metadata:   result.Metadata,
+			IsError:    result.IsError,
+		}
+	}
 	var item ToolMessageItem
 	switch toolCall.Name {
 	case tools.BashToolName:
-		item = NewBashToolMessageItem(sty, toolCall, result, canceled)
+		item = NewBashToolMessageItem(sty, engineToolCall, engineResult, canceled)
 	case tools.JobOutputToolName:
-		item = NewJobOutputToolMessageItem(sty, toolCall, result, canceled)
+		item = NewJobOutputToolMessageItem(sty, engineToolCall, engineResult, canceled)
 	case tools.JobKillToolName:
-		item = NewJobKillToolMessageItem(sty, toolCall, result, canceled)
+		item = NewJobKillToolMessageItem(sty, engineToolCall, engineResult, canceled)
 	case tools.ViewToolName:
-		item = NewViewToolMessageItem(sty, toolCall, result, canceled)
+		item = NewViewToolMessageItem(sty, engineToolCall, engineResult, canceled)
 	case tools.WriteToolName:
-		item = NewWriteToolMessageItem(sty, toolCall, result, canceled)
+		item = NewWriteToolMessageItem(sty, engineToolCall, engineResult, canceled)
 	case tools.EditToolName:
-		item = NewEditToolMessageItem(sty, toolCall, result, canceled)
+		item = NewEditToolMessageItem(sty, engineToolCall, engineResult, canceled)
 	case tools.MultiEditToolName:
-		item = NewMultiEditToolMessageItem(sty, toolCall, result, canceled)
+		item = NewMultiEditToolMessageItem(sty, engineToolCall, engineResult, canceled)
 	case tools.GlobToolName:
-		item = NewGlobToolMessageItem(sty, toolCall, result, canceled)
+		item = NewGlobToolMessageItem(sty, engineToolCall, engineResult, canceled)
 	case tools.GrepToolName:
-		item = NewGrepToolMessageItem(sty, toolCall, result, canceled)
+		item = NewGrepToolMessageItem(sty, engineToolCall, engineResult, canceled)
 	case tools.LSToolName:
-		item = NewLSToolMessageItem(sty, toolCall, result, canceled)
+		item = NewLSToolMessageItem(sty, engineToolCall, engineResult, canceled)
 	case tools.DownloadToolName:
-		item = NewDownloadToolMessageItem(sty, toolCall, result, canceled)
+		item = NewDownloadToolMessageItem(sty, engineToolCall, engineResult, canceled)
 	case tools.FetchToolName:
-		item = NewFetchToolMessageItem(sty, toolCall, result, canceled)
+		item = NewFetchToolMessageItem(sty, engineToolCall, engineResult, canceled)
 	case tools.SourcegraphToolName:
-		item = NewSourcegraphToolMessageItem(sty, toolCall, result, canceled)
+		item = NewSourcegraphToolMessageItem(sty, engineToolCall, engineResult, canceled)
 	case tools.DiagnosticsToolName:
-		item = NewDiagnosticsToolMessageItem(sty, toolCall, result, canceled)
+		item = NewDiagnosticsToolMessageItem(sty, engineToolCall, engineResult, canceled)
 	case agent.AgentToolName:
-		item = NewAgentToolMessageItem(sty, toolCall, result, canceled)
+		item = NewAgentToolMessageItem(sty, engineToolCall, engineResult, canceled)
 	case tools.AgenticFetchToolName:
-		item = NewAgenticFetchToolMessageItem(sty, toolCall, result, canceled)
+		item = NewAgenticFetchToolMessageItem(sty, engineToolCall, engineResult, canceled)
 	case tools.WebFetchToolName:
-		item = NewWebFetchToolMessageItem(sty, toolCall, result, canceled)
+		item = NewWebFetchToolMessageItem(sty, engineToolCall, engineResult, canceled)
 	case tools.WebSearchToolName:
-		item = NewWebSearchToolMessageItem(sty, toolCall, result, canceled)
+		item = NewWebSearchToolMessageItem(sty, engineToolCall, engineResult, canceled)
 	case tools.TodosToolName:
-		item = NewTodosToolMessageItem(sty, toolCall, result, canceled)
+		item = NewTodosToolMessageItem(sty, engineToolCall, engineResult, canceled)
 	case tools.ReferencesToolName:
-		item = NewReferencesToolMessageItem(sty, toolCall, result, canceled)
+		item = NewReferencesToolMessageItem(sty, engineToolCall, engineResult, canceled)
 	case tools.LSPRestartToolName:
-		item = NewLSPRestartToolMessageItem(sty, toolCall, result, canceled)
+		item = NewLSPRestartToolMessageItem(sty, engineToolCall, engineResult, canceled)
 	default:
 		if IsDockerMCPTool(toolCall.Name) {
-			item = NewDockerMCPToolMessageItem(sty, toolCall, result, canceled)
+			item = NewDockerMCPToolMessageItem(sty, engineToolCall, engineResult, canceled)
 		} else if strings.HasPrefix(toolCall.Name, "mcp_") {
-			item = NewMCPToolMessageItem(sty, toolCall, result, canceled)
+			item = NewMCPToolMessageItem(sty, engineToolCall, engineResult, canceled)
 		} else {
-			item = NewGenericToolMessageItem(sty, toolCall, result, canceled)
+			item = NewGenericToolMessageItem(sty, engineToolCall, engineResult, canceled)
 		}
 	}
 	item.SetMessageID(messageID)

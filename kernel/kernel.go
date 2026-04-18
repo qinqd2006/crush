@@ -7,6 +7,7 @@ package kernel
 import (
 	"context"
 	"strings"
+	"time"
 )
 
 // InfoType represents the type of informational message.
@@ -470,6 +471,26 @@ func (m *Message) IsText() bool {
 		}
 	}
 	return false
+}
+
+// IsFinished returns true if the message has a finish part.
+func (m *Message) IsFinished() bool {
+	return m.FinishPart() != nil
+}
+
+// ThinkingDuration returns the duration of the thinking process.
+func (m *Message) ThinkingDuration() time.Duration {
+	reasoning := m.ReasoningContent()
+	if reasoning.StartedAt == 0 {
+		return 0
+	}
+
+	endTime := reasoning.FinishedAt
+	if endTime == 0 {
+		endTime = time.Now().Unix()
+	}
+
+	return time.Duration(endTime-reasoning.StartedAt) * time.Second
 }
 
 // ============================================================================

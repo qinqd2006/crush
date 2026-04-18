@@ -6,11 +6,11 @@ import (
 
 	tea "charm.land/bubbletea/v2"
 	"charm.land/lipgloss/v2"
-	"github.com/mosaic2025002/crush/engine/message"
+	"github.com/charmbracelet/x/ansi"
+	"github.com/mosaic2025002/crush/kernel"
 	"github.com/mosaic2025002/crush/ui/anim"
 	"github.com/mosaic2025002/crush/ui/common"
 	"github.com/mosaic2025002/crush/ui/styles"
-	"github.com/charmbracelet/x/ansi"
 )
 
 // assistantMessageTruncateFormat is the text shown when an assistant message is
@@ -28,7 +28,7 @@ type AssistantMessageItem struct {
 	*cachedMessageItem
 	*focusableMessageItem
 
-	message           *message.Message
+	message           *kernel.Message
 	sty               *styles.Styles
 	anim              *anim.Anim
 	thinkingExpanded  bool
@@ -36,7 +36,7 @@ type AssistantMessageItem struct {
 }
 
 // NewAssistantMessageItem creates a new AssistantMessageItem.
-func NewAssistantMessageItem(sty *styles.Styles, message *message.Message) MessageItem {
+func NewAssistantMessageItem(sty *styles.Styles, message *kernel.Message) MessageItem {
 	a := &AssistantMessageItem{
 		highlightableMessageItem: defaultHighlighter(sty),
 		cachedMessageItem:        &cachedMessageItem{},
@@ -148,9 +148,9 @@ func (a *AssistantMessageItem) renderMessageContent(width int) string {
 	// finally add any finish reason info
 	if a.message.IsFinished() {
 		switch a.message.FinishReason() {
-		case message.FinishReasonCanceled:
+		case kernel.FinishReasonCanceled:
 			messageParts = append(messageParts, a.sty.Base.Italic(true).Render("Canceled"))
-		case message.FinishReasonError:
+		case kernel.FinishReasonError:
 			messageParts = append(messageParts, a.renderError(width))
 		}
 	}
@@ -239,7 +239,7 @@ func (a *AssistantMessageItem) isSpinning() bool {
 }
 
 // SetMessage is used to update the underlying message.
-func (a *AssistantMessageItem) SetMessage(message *message.Message) tea.Cmd {
+func (a *AssistantMessageItem) SetMessage(message *kernel.Message) tea.Cmd {
 	wasSpinning := a.isSpinning()
 	a.message = message
 	a.clearCache()

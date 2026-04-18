@@ -22,6 +22,7 @@ import (
 	"github.com/mosaic2025002/crush/engine/event"
 	"github.com/mosaic2025002/crush/engine/message"
 	"github.com/mosaic2025002/crush/engine/session"
+	"github.com/mosaic2025002/crush/kernel"
 	"github.com/mosaic2025002/crush/ui/chat"
 	"github.com/mosaic2025002/crush/ui/styles"
 	"github.com/charmbracelet/x/ansi"
@@ -439,7 +440,11 @@ func outputSessionJSON(w io.Writer, sess session.Session, msgs []*message.Messag
 
 func outputSessionHuman(ctx context.Context, sess session.Session, msgs []*message.Message) error {
 	sty := styles.DefaultStyles()
-	toolResults := chat.BuildToolResultMap(msgs)
+	kernelMsgs := make([]*kernel.Message, len(msgs))
+	for i, m := range msgs {
+		kernelMsgs[i] = messageToKernel(m)
+	}
+	toolResults := chat.BuildToolResultMap(kernelMsgs)
 
 	width := sessionOutputWidth
 	if w, _, err := term.GetSize(os.Stdout.Fd()); err == nil && w > 0 {
@@ -478,8 +483,8 @@ func outputSessionHuman(ctx context.Context, sess session.Session, msgs []*messa
 	fmt.Fprintln(&buf)
 
 	first := true
-	for _, msg := range msgs {
-		items := chat.ExtractMessageItems(&sty, msg, toolResults)
+	for i, msg := range msgs {
+		items := chat.ExtractMessageItems(&sty, kernelMsgs[i], toolResults)
 		for _, item := range items {
 			if !first {
 				fmt.Fprintln(&buf)
@@ -487,6 +492,7 @@ func outputSessionHuman(ctx context.Context, sess session.Session, msgs []*messa
 			first = false
 			fmt.Fprintln(&buf, item.Render(contentWidth))
 		}
+		_ = msg // avoid unused variable
 	}
 	fmt.Fprintln(&buf)
 
@@ -719,4 +725,72 @@ func convertParts(parts []message.ContentPart) []sessionShowPart {
 type sessionShowOutput struct {
 	Meta     sessionShowMeta      `json:"meta"`
 	Messages []sessionShowMessage `json:"messages"`
+}
+
+// messageToKernel converts an engine message to a kernel message.
+func messageToKernel(m *message.Message) *kernel.Message {
+	if m == nil {
+		return nil
+	}
+	parts := make([]kernel.ContentPart, 0, len(m.Parts))
+	for _, p := range m.Parts {
+		switch tp := p.(type) {
+		case message.TextContent:
+			parts = append(parts, kernel.TextContent{Text: tp.Text})
+		case message.ReasoningContent:
+			parts = append(parts, kernel.ReasoningContent{
+				Thinking:   tp.Thinking,
+				Signature:  tp.Signature,
+				StartedAt:  tp.StartedAt,
+				FinishedAt: tp.FinishedAt,
+			})
+		case message.ToolCall:
+			parts = append(parts, kernel.ToolCallContent{
+				ID:               tp.ID,
+				Name:             tp.Name,
+				Input:            tp.Input,
+				ProviderExecuted: tp.ProviderExecuted,
+				Finished:         tp.Finished,
+			})
+		case message.ToolResult:
+			parts = append(parts, kernel.ToolResultContent{
+				ToolCallID: tp.ToolCallID,
+				Name:       tp.Name,
+				Content:    tp.Content,
+				Data:       []byte(tp.Data),
+				MIMEType:   tp.MIMEType,
+				Metadata:   tp.Metadata,
+				IsError:    tp.IsError,
+			})
+		case message.Finish:
+			parts = append(parts, kernel.FinishContent{
+				Reason:  kernel.FinishReason(tp.Reason),
+				Time:    tp.Time,
+				Message: tp.Message,
+				Details: tp.Details,
+			})
+		case message.ImageURLContent:
+			parts = append(parts, kernel.ImageURLContent{
+				URL:    tp.URL,
+				Detail: tp.Detail,
+			})
+		case message.BinaryContent:
+			parts = append(parts, kernel.BinaryContent{
+				Path:     tp.Path,
+				MIMEType: tp.MIMEType,
+				Data:     tp.Data,
+			})
+		}
+	}
+	return &kernel.Message{
+		ID:               m.ID,
+		Role:             kernel.MessageRole(m.Role),
+		SessionID:        m.SessionID,
+		Parts:            parts,
+		Model:            m.Model,
+		Provider:         m.Provider,
+		CreatedAt:        m.CreatedAt,
+		UpdatedAt:        m.UpdatedAt,
+		IsSummaryMessage: m.IsSummaryMessage,
+	}
 }

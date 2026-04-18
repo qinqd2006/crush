@@ -7,10 +7,8 @@ import (
 	"time"
 
 	tea "charm.land/bubbletea/v2"
-	"charm.land/catwalk/pkg/catwalk"
 	"charm.land/lipgloss/v2"
-	"github.com/mosaic2025002/crush/engine/config"
-	"github.com/mosaic2025002/crush/engine/message"
+	"github.com/mosaic2025002/crush/kernel"
 	"github.com/mosaic2025002/crush/ui/anim"
 	"github.com/mosaic2025002/crush/ui/attachments"
 	"github.com/mosaic2025002/crush/ui/common"
@@ -71,7 +69,7 @@ type FocusableMessageItem interface {
 // SendMsg represents a message to send a chat message.
 type SendMsg struct {
 	Text        string
-	Attachments []message.Attachment
+	Attachments []kernel.Attachment
 }
 
 type highlightableMessageItem struct {
@@ -184,14 +182,14 @@ type AssistantInfoItem struct {
 	*cachedMessageItem
 
 	id                  string
-	message             *message.Message
+	message             *kernel.Message
 	sty                 *styles.Styles
-	cfg                 *config.Config
+	cfg                 kernel.ConfigProvider
 	lastUserMessageTime time.Time
 }
 
 // NewAssistantInfoItem creates a new AssistantInfoItem.
-func NewAssistantInfoItem(sty *styles.Styles, message *message.Message, cfg *config.Config, lastUserMessageTime time.Time) MessageItem {
+func NewAssistantInfoItem(sty *styles.Styles, message *kernel.Message, cfg kernel.ConfigProvider, lastUserMessageTime time.Time) MessageItem {
 	return &AssistantInfoItem{
 		cachedMessageItem:   &cachedMessageItem{},
 		id:                  AssistantInfoID(message.ID),
@@ -238,16 +236,10 @@ func (a *AssistantInfoItem) renderContent(width int) string {
 	duration := finishTime.Sub(a.lastUserMessageTime)
 	infoMsg := a.sty.Chat.Message.AssistantInfoDuration.Render(duration.String())
 	icon := a.sty.Chat.Message.AssistantInfoIcon.Render(styles.ModelIcon)
-	model := a.cfg.GetModel(a.message.Provider, a.message.Model)
-	if model == nil {
-		model = &catwalk.Model{Name: "Unknown Model"}
-	}
-	modelFormatted := a.sty.Chat.Message.AssistantInfoModel.Render(model.Name)
-	providerName := a.message.Provider
-	if providerConfig, ok := a.cfg.Providers.Get(a.message.Provider); ok {
-		providerName = providerConfig.Name
-	}
-	provider := a.sty.Chat.Message.AssistantInfoProvider.Render(fmt.Sprintf("via %s", providerName))
+	modelInfo := a.cfg.GetModelInfo(a.message.Provider, a.message.Model)
+	modelFormatted := a.sty.Chat.Message.AssistantInfoModel.Render(modelInfo.Name)
+	providerInfo := a.cfg.GetProviderInfo(a.message.Provider)
+	provider := a.sty.Chat.Message.AssistantInfoProvider.Render(fmt.Sprintf("via %s", providerInfo.Name))
 	assistant := fmt.Sprintf("%s %s %s %s", icon, modelFormatted, provider, infoMsg)
 	return common.Section(a.sty, assistant, width)
 }
@@ -257,14 +249,14 @@ func cappedMessageWidth(availableWidth int) int {
 	return min(availableWidth-MessageLeftPaddingTotal, maxTextWidth)
 }
 
-// ExtractMessageItems extracts [MessageItem]s from a [message.Message]. It
+// ExtractMessageItems extracts [MessageItem]s from a [kernel.Message]. It
 // returns all parts of the message as [MessageItem]s.
 //
 // For assistant messages with tool calls, pass a toolResults map to link results.
 // Use BuildToolResultMap to create this map from all messages in a session.
-func ExtractMessageItems(sty *styles.Styles, msg *message.Message, toolResults map[string]message.ToolResult) []MessageItem {
+func ExtractMessageItems(sty *styles.Styles, msg *kernel.Message, toolResults map[string]kernel.ToolResultContent) []MessageItem {
 	switch msg.Role {
-	case message.User:
+	case kernel.RoleUser:
 		r := attachments.NewRenderer(
 			sty.Attachments.Normal,
 			sty.Attachments.Deleting,
@@ -272,13 +264,13 @@ func ExtractMessageItems(sty *styles.Styles, msg *message.Message, toolResults m
 			sty.Attachments.Text,
 		)
 		return []MessageItem{NewUserMessageItem(sty, msg, r)}
-	case message.Assistant:
+	case kernel.RoleAssistant:
 		var items []MessageItem
 		if ShouldRenderAssistantMessage(msg) {
 			items = append(items, NewAssistantMessageItem(sty, msg))
 		}
 		for _, tc := range msg.ToolCalls() {
-			var result *message.ToolResult
+			var result *kernel.ToolResultContent
 			if tr, ok := toolResults[tc.ID]; ok {
 				result = &tr
 			}
@@ -287,7 +279,7 @@ func ExtractMessageItems(sty *styles.Styles, msg *message.Message, toolResults m
 				msg.ID,
 				tc,
 				result,
-				msg.FinishReason() == message.FinishReasonCanceled,
+				msg.FinishReason() == kernel.FinishReasonCanceled,
 			))
 		}
 		return items
@@ -299,22 +291,22 @@ func ExtractMessageItems(sty *styles.Styles, msg *message.Message, toolResults m
 //
 // In some cases the assistant message only has tools so we do not want to render an
 // empty message.
-func ShouldRenderAssistantMessage(msg *message.Message) bool {
+func ShouldRenderAssistantMessage(msg *kernel.Message) bool {
 	content := strings.TrimSpace(msg.Content().Text)
 	thinking := strings.TrimSpace(msg.ReasoningContent().Thinking)
-	isError := msg.FinishReason() == message.FinishReasonError
-	isCancelled := msg.FinishReason() == message.FinishReasonCanceled
+	isError := msg.FinishReason() == kernel.FinishReasonError
+	isCancelled := msg.FinishReason() == kernel.FinishReasonCanceled
 	hasToolCalls := len(msg.ToolCalls()) > 0
 	return !hasToolCalls || content != "" || thinking != "" || msg.IsThinking() || isError || isCancelled
 }
 
 // BuildToolResultMap creates a map of tool call IDs to their results from a list of messages.
-// Tool result messages (role == message.Tool) contain the results that should be linked
+// Tool result messages (role == kernel.RoleTool) contain the results that should be linked
 // to tool calls in assistant messages.
-func BuildToolResultMap(messages []*message.Message) map[string]message.ToolResult {
-	resultMap := make(map[string]message.ToolResult)
+func BuildToolResultMap(messages []*kernel.Message) map[string]kernel.ToolResultContent {
+	resultMap := make(map[string]kernel.ToolResultContent)
 	for _, msg := range messages {
-		if msg.Role == message.Tool {
+		if msg.Role == kernel.RoleTool {
 			for _, result := range msg.ToolResults() {
 				if result.ToolCallID != "" {
 					resultMap[result.ToolCallID] = result

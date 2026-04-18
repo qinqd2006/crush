@@ -6,6 +6,7 @@ import (
 	tea "charm.land/bubbletea/v2"
 	"charm.land/lipgloss/v2"
 	"github.com/mosaic2025002/crush/engine/message"
+	"github.com/mosaic2025002/crush/kernel"
 	"github.com/mosaic2025002/crush/ui/attachments"
 	"github.com/mosaic2025002/crush/ui/common"
 	"github.com/mosaic2025002/crush/ui/styles"
@@ -18,12 +19,12 @@ type UserMessageItem struct {
 	*focusableMessageItem
 
 	attachments *attachments.Renderer
-	message     *message.Message
+	message     *kernel.Message
 	sty         *styles.Styles
 }
 
 // NewUserMessageItem creates a new UserMessageItem.
-func NewUserMessageItem(sty *styles.Styles, message *message.Message, attachments *attachments.Renderer) MessageItem {
+func NewUserMessageItem(sty *styles.Styles, message *kernel.Message, attachments *attachments.Renderer) MessageItem {
 	return &UserMessageItem{
 		highlightableMessageItem: defaultHighlighter(sty),
 		cachedMessageItem:        &cachedMessageItem{},
@@ -54,7 +55,7 @@ func (m *UserMessageItem) RawRender(width int) string {
 		content = strings.TrimSuffix(result, "\n")
 	}
 
-	if len(m.message.BinaryContent()) > 0 {
+	if len(m.message.BinaryContents()) > 0 {
 		attachmentsStr := m.renderAttachments(cappedWidth)
 		if content == "" {
 			content = attachmentsStr
@@ -91,7 +92,7 @@ func (m *UserMessageItem) ID() string {
 // renderAttachments renders attachments.
 func (m *UserMessageItem) renderAttachments(width int) string {
 	var attachments []message.Attachment
-	for _, at := range m.message.BinaryContent() {
+	for _, at := range m.message.BinaryContents() {
 		attachments = append(attachments, message.Attachment{
 			FileName: at.Path,
 			MimeType: at.MIMEType,

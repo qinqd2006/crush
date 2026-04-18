@@ -52,6 +52,7 @@ import (
 	"github.com/mosaic2025002/crush/engine/version"
 	"github.com/mosaic2025002/crush/engine/workspace"
 	"github.com/mosaic2025002/crush/kernel"
+	"github.com/mosaic2025002/crush/engine/adapter"
 	uv "github.com/charmbracelet/ultraviolet"
 	"github.com/charmbracelet/ultraviolet/layout"
 	"github.com/charmbracelet/ultraviolet/screen"
@@ -843,31 +844,35 @@ func (m *UI) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 // setSessionMessages sets the messages for the current session in the chat
 func (m *UI) setSessionMessages(msgs []message.Message) tea.Cmd {
 	var cmds []tea.Cmd
-	// Build tool result map to link tool calls with their results
-	msgPtrs := make([]*message.Message, len(msgs))
+	// Convert engine messages to kernel messages
+	kernelMsgs := make([]*kernel.Message, len(msgs))
 	for i := range msgs {
-		msgPtrs[i] = &msgs[i]
+		kernelMsgs[i] = messageToKernel(&msgs[i])
 	}
-	toolResultMap := chat.BuildToolResultMap(msgPtrs)
-	if len(msgPtrs) > 0 {
-		m.lastUserMessageTime = msgPtrs[0].CreatedAt
+
+	// Build tool result map to link tool calls with their results
+	toolResultMap := chat.BuildToolResultMap(kernelMsgs)
+	if len(kernelMsgs) > 0 {
+		m.lastUserMessageTime = msgs[0].CreatedAt
 	}
 
 	// Add messages to chat with linked tool results
 	items := make([]chat.MessageItem, 0, len(msgs)*2)
-	for _, msg := range msgPtrs {
+	for i, msg := range msgs {
+		kernelMsg := kernelMsgs[i]
 		switch msg.Role {
 		case message.User:
 			m.lastUserMessageTime = msg.CreatedAt
-			items = append(items, chat.ExtractMessageItems(m.com.Styles, msg, toolResultMap)...)
+			items = append(items, chat.ExtractMessageItems(m.com.Styles, kernelMsg, toolResultMap)...)
 		case message.Assistant:
-			items = append(items, chat.ExtractMessageItems(m.com.Styles, msg, toolResultMap)...)
-			if msg.FinishPart() != nil && msg.FinishPart().Reason == message.FinishReasonEndTurn {
-				infoItem := chat.NewAssistantInfoItem(m.com.Styles, msg, m.com.Config(), time.Unix(m.lastUserMessageTime, 0))
+			items = append(items, chat.ExtractMessageItems(m.com.Styles, kernelMsg, toolResultMap)...)
+			if kernelMsg.FinishPart() != nil && kernelMsg.FinishReason() == kernel.FinishReasonEndTurn {
+				cfgProvider := adapter.NewWorkspaceAdapter(m.com.Workspace).Config()
+				infoItem := chat.NewAssistantInfoItem(m.com.Styles, kernelMsg, cfgProvider, time.Unix(m.lastUserMessageTime, 0))
 				items = append(items, infoItem)
 			}
 		default:
-			items = append(items, chat.ExtractMessageItems(m.com.Styles, msg, toolResultMap)...)
+			items = append(items, chat.ExtractMessageItems(m.com.Styles, kernelMsg, toolResultMap)...)
 		}
 	}
 
@@ -917,16 +922,16 @@ func (m *UI) loadNestedToolCalls(items []chat.MessageItem) {
 		}
 
 		// Build tool result map for nested messages.
-		nestedMsgPtrs := make([]*message.Message, len(nestedMsgs))
+		nestedKernelMsgs := make([]*kernel.Message, len(nestedMsgs))
 		for i := range nestedMsgs {
-			nestedMsgPtrs[i] = &nestedMsgs[i]
+			nestedKernelMsgs[i] = messageToKernel(&nestedMsgs[i])
 		}
-		nestedToolResultMap := chat.BuildToolResultMap(nestedMsgPtrs)
+		nestedToolResultMap := chat.BuildToolResultMap(nestedKernelMsgs)
 
 		// Extract nested tool items.
 		var nestedTools []chat.ToolMessageItem
-		for _, nestedMsg := range nestedMsgPtrs {
-			nestedItems := chat.ExtractMessageItems(m.com.Styles, nestedMsg, nestedToolResultMap)
+		for i, nestedMsg := range nestedMsgs {
+			nestedItems := chat.ExtractMessageItems(m.com.Styles, nestedKernelMsgs[i], nestedToolResultMap)
 			for _, nestedItem := range nestedItems {
 				if nestedToolItem, ok := nestedItem.(chat.ToolMessageItem); ok {
 					// Mark nested tools as simple (compact) rendering.
@@ -936,6 +941,7 @@ func (m *UI) loadNestedToolCalls(items []chat.MessageItem) {
 					nestedTools = append(nestedTools, nestedToolItem)
 				}
 			}
+			_ = nestedMsg // avoid unused variable
 		}
 
 		// Recursively load nested tool calls for any agent tools within.
@@ -961,10 +967,14 @@ func (m *UI) appendSessionMessage(msg message.Message) tea.Cmd {
 		return nil
 	}
 
+	kernelMsg := messageToKernel(&msg)
+	wsAdapter := adapter.NewWorkspaceAdapter(m.com.Workspace)
+	cfgProvider := wsAdapter.Config()
+
 	switch msg.Role {
 	case message.User:
 		m.lastUserMessageTime = msg.CreatedAt
-		items := chat.ExtractMessageItems(m.com.Styles, &msg, nil)
+		items := chat.ExtractMessageItems(m.com.Styles, kernelMsg, nil)
 		for _, item := range items {
 			if animatable, ok := item.(chat.Animatable); ok {
 				if cmd := animatable.StartAnimation(); cmd != nil {
@@ -977,7 +987,7 @@ func (m *UI) appendSessionMessage(msg message.Message) tea.Cmd {
 			cmds = append(cmds, cmd)
 		}
 	case message.Assistant:
-		items := chat.ExtractMessageItems(m.com.Styles, &msg, nil)
+		items := chat.ExtractMessageItems(m.com.Styles, kernelMsg, nil)
 		for _, item := range items {
 			if animatable, ok := item.(chat.Animatable); ok {
 				if cmd := animatable.StartAnimation(); cmd != nil {
@@ -991,8 +1001,8 @@ func (m *UI) appendSessionMessage(msg message.Message) tea.Cmd {
 				cmds = append(cmds, cmd)
 			}
 		}
-		if msg.FinishPart() != nil && msg.FinishPart().Reason == message.FinishReasonEndTurn {
-			infoItem := chat.NewAssistantInfoItem(m.com.Styles, &msg, m.com.Config(), time.Unix(m.lastUserMessageTime, 0))
+		if kernelMsg.FinishPart() != nil && kernelMsg.FinishReason() == kernel.FinishReasonEndTurn {
+			infoItem := chat.NewAssistantInfoItem(m.com.Styles, kernelMsg, cfgProvider, time.Unix(m.lastUserMessageTime, 0))
 			m.chat.AppendMessages(infoItem)
 			if m.chat.Follow() {
 				if cmd := m.chat.ScrollToBottomAndAnimate(); cmd != nil {
@@ -1044,14 +1054,17 @@ func (m *UI) handleClickFocus(msg tea.MouseClickMsg) (cmd tea.Cmd) {
 func (m *UI) updateSessionMessage(msg message.Message) tea.Cmd {
 	var cmds []tea.Cmd
 	existingItem := m.chat.MessageItem(msg.ID)
+	kernelMsg := messageToKernel(&msg)
+	wsAdapter := adapter.NewWorkspaceAdapter(m.com.Workspace)
+	cfgProvider := wsAdapter.Config()
 
 	if existingItem != nil {
 		if assistantItem, ok := existingItem.(*chat.AssistantMessageItem); ok {
-			assistantItem.SetMessage(&msg)
+			assistantItem.SetMessage(kernelMsg)
 		}
 	}
 
-	shouldRenderAssistant := chat.ShouldRenderAssistantMessage(&msg)
+	shouldRenderAssistant := chat.ShouldRenderAssistantMessage(kernelMsg)
 	// if the message of the assistant does not have any  response just tool calls we need to remove it
 	if !shouldRenderAssistant && len(msg.ToolCalls()) > 0 && existingItem != nil {
 		m.chat.RemoveMessage(msg.ID)
@@ -1060,9 +1073,9 @@ func (m *UI) updateSessionMessage(msg message.Message) tea.Cmd {
 		}
 	}
 
-	if shouldRenderAssistant && msg.FinishPart() != nil && msg.FinishPart().Reason == message.FinishReasonEndTurn {
+	if shouldRenderAssistant && kernelMsg.FinishPart() != nil && kernelMsg.FinishReason() == kernel.FinishReasonEndTurn {
 		if infoItem := m.chat.MessageItem(chat.AssistantInfoID(msg.ID)); infoItem == nil {
-			newInfoItem := chat.NewAssistantInfoItem(m.com.Styles, &msg, m.com.Config(), time.Unix(m.lastUserMessageTime, 0))
+			newInfoItem := chat.NewAssistantInfoItem(m.com.Styles, kernelMsg, cfgProvider, time.Unix(m.lastUserMessageTime, 0))
 			m.chat.AppendMessages(newInfoItem)
 		}
 	}
@@ -1079,7 +1092,14 @@ func (m *UI) updateSessionMessage(msg message.Message) tea.Cmd {
 			}
 		}
 		if existingToolItem == nil {
-			items = append(items, chat.NewToolMessageItem(m.com.Styles, msg.ID, tc, nil, false))
+			kernelTc := kernel.ToolCallContent{
+				ID:               tc.ID,
+				Name:             tc.Name,
+				Input:            tc.Input,
+				ProviderExecuted: tc.ProviderExecuted,
+				Finished:         tc.Finished,
+			}
+			items = append(items, chat.NewToolMessageItem(m.com.Styles, msg.ID, kernelTc, nil, false))
 		}
 	}
 
@@ -3770,9 +3790,13 @@ func (m *UI) appendSessionMessageFromKernel(msg message.Message) tea.Cmd {
 		return nil
 	}
 
+	kernelMsg := messageToKernel(&msg)
+	wsAdapter := adapter.NewWorkspaceAdapter(m.com.Workspace)
+	cfgProvider := wsAdapter.Config()
+
 	switch msg.Role {
 	case message.User:
-		items := chat.ExtractMessageItems(m.com.Styles, &msg, nil)
+		items := chat.ExtractMessageItems(m.com.Styles, kernelMsg, nil)
 		for _, item := range items {
 			if animatable, ok := item.(chat.Animatable); ok {
 				if cmd := animatable.StartAnimation(); cmd != nil {
@@ -3785,7 +3809,7 @@ func (m *UI) appendSessionMessageFromKernel(msg message.Message) tea.Cmd {
 			cmds = append(cmds, cmd)
 		}
 	case message.Assistant:
-		items := chat.ExtractMessageItems(m.com.Styles, &msg, nil)
+		items := chat.ExtractMessageItems(m.com.Styles, kernelMsg, nil)
 		for _, item := range items {
 			if animatable, ok := item.(chat.Animatable); ok {
 				if cmd := animatable.StartAnimation(); cmd != nil {
@@ -3799,8 +3823,8 @@ func (m *UI) appendSessionMessageFromKernel(msg message.Message) tea.Cmd {
 				cmds = append(cmds, cmd)
 			}
 		}
-		if msg.FinishPart() != nil && msg.FinishPart().Reason == message.FinishReasonEndTurn {
-			infoItem := chat.NewAssistantInfoItem(m.com.Styles, &msg, m.com.Config(), time.Now())
+		if kernelMsg.FinishPart() != nil && kernelMsg.FinishReason() == kernel.FinishReasonEndTurn {
+			infoItem := chat.NewAssistantInfoItem(m.com.Styles, kernelMsg, cfgProvider, time.Now())
 			m.chat.AppendMessages(infoItem)
 			if m.chat.Follow() {
 				if cmd := m.chat.ScrollToBottomAndAnimate(); cmd != nil {
@@ -3831,14 +3855,17 @@ func (m *UI) appendSessionMessageFromKernel(msg message.Message) tea.Cmd {
 func (m *UI) updateSessionMessageFromKernel(msg message.Message) tea.Cmd {
 	var cmds []tea.Cmd
 	existingItem := m.chat.MessageItem(msg.ID)
+	kernelMsg := messageToKernel(&msg)
+	wsAdapter := adapter.NewWorkspaceAdapter(m.com.Workspace)
+	cfgProvider := wsAdapter.Config()
 
 	if existingItem != nil {
 		if assistantItem, ok := existingItem.(*chat.AssistantMessageItem); ok {
-			assistantItem.SetMessage(&msg)
+			assistantItem.SetMessage(kernelMsg)
 		}
 	}
 
-	shouldRenderAssistant := chat.ShouldRenderAssistantMessage(&msg)
+	shouldRenderAssistant := chat.ShouldRenderAssistantMessage(kernelMsg)
 	if !shouldRenderAssistant && len(msg.ToolCalls()) > 0 && existingItem != nil {
 		m.chat.RemoveMessage(msg.ID)
 		if infoItem := m.chat.MessageItem(chat.AssistantInfoID(msg.ID)); infoItem != nil {
@@ -3846,9 +3873,9 @@ func (m *UI) updateSessionMessageFromKernel(msg message.Message) tea.Cmd {
 		}
 	}
 
-	if shouldRenderAssistant && msg.FinishPart() != nil && msg.FinishPart().Reason == message.FinishReasonEndTurn {
+	if shouldRenderAssistant && kernelMsg.FinishPart() != nil && kernelMsg.FinishReason() == kernel.FinishReasonEndTurn {
 		if infoItem := m.chat.MessageItem(chat.AssistantInfoID(msg.ID)); infoItem == nil {
-			newInfoItem := chat.NewAssistantInfoItem(m.com.Styles, &msg, m.com.Config(), time.Now())
+			newInfoItem := chat.NewAssistantInfoItem(m.com.Styles, kernelMsg, cfgProvider, time.Now())
 			m.chat.AppendMessages(newInfoItem)
 		}
 	}
@@ -3863,7 +3890,14 @@ func (m *UI) updateSessionMessageFromKernel(msg message.Message) tea.Cmd {
 			}
 		}
 		if existingToolItem == nil {
-			items = append(items, chat.NewToolMessageItem(m.com.Styles, msg.ID, tc, nil, false))
+			kernelTc := kernel.ToolCallContent{
+				ID:               tc.ID,
+				Name:             tc.Name,
+				Input:            tc.Input,
+				ProviderExecuted: tc.ProviderExecuted,
+				Finished:         tc.Finished,
+			}
+			items = append(items, chat.NewToolMessageItem(m.com.Styles, msg.ID, kernelTc, nil, false))
 		}
 	}
 
@@ -3937,7 +3971,14 @@ func (m *UI) handleChildSessionMessageFromKernel(event message.Message) tea.Cmd 
 			}
 		}
 		if !found {
-			nestedItem := chat.NewToolMessageItem(m.com.Styles, event.ID, tc, nil, false)
+			kernelTc := kernel.ToolCallContent{
+				ID:               tc.ID,
+				Name:             tc.Name,
+				Input:            tc.Input,
+				ProviderExecuted: tc.ProviderExecuted,
+				Finished:         tc.Finished,
+			}
+			nestedItem := chat.NewToolMessageItem(m.com.Styles, event.ID, kernelTc, nil, false)
 			if simplifiable, ok := nestedItem.(chat.Compactable); ok {
 				simplifiable.SetCompact(true)
 			}
@@ -3974,4 +4015,72 @@ func (m *UI) handleChildSessionMessageFromKernel(event message.Message) tea.Cmd 
 	}
 
 	return tea.Sequence(cmds...)
+}
+
+// messageToKernel converts an engine message to a kernel message.
+func messageToKernel(m *message.Message) *kernel.Message {
+	if m == nil {
+		return nil
+	}
+	parts := make([]kernel.ContentPart, 0, len(m.Parts))
+	for _, p := range m.Parts {
+		switch tp := p.(type) {
+		case message.TextContent:
+			parts = append(parts, kernel.TextContent{Text: tp.Text})
+		case message.ReasoningContent:
+			parts = append(parts, kernel.ReasoningContent{
+				Thinking:   tp.Thinking,
+				Signature:  tp.Signature,
+				StartedAt:  tp.StartedAt,
+				FinishedAt: tp.FinishedAt,
+			})
+		case message.ToolCall:
+			parts = append(parts, kernel.ToolCallContent{
+				ID:               tp.ID,
+				Name:             tp.Name,
+				Input:            tp.Input,
+				ProviderExecuted: tp.ProviderExecuted,
+				Finished:         tp.Finished,
+			})
+		case message.ToolResult:
+			parts = append(parts, kernel.ToolResultContent{
+				ToolCallID: tp.ToolCallID,
+				Name:       tp.Name,
+				Content:    tp.Content,
+				Data:       []byte(tp.Data),
+				MIMEType:   tp.MIMEType,
+				Metadata:   tp.Metadata,
+				IsError:    tp.IsError,
+			})
+		case message.Finish:
+			parts = append(parts, kernel.FinishContent{
+				Reason:  kernel.FinishReason(tp.Reason),
+				Time:    tp.Time,
+				Message: tp.Message,
+				Details: tp.Details,
+			})
+		case message.ImageURLContent:
+			parts = append(parts, kernel.ImageURLContent{
+				URL:    tp.URL,
+				Detail: tp.Detail,
+			})
+		case message.BinaryContent:
+			parts = append(parts, kernel.BinaryContent{
+				Path:     tp.Path,
+				MIMEType: tp.MIMEType,
+				Data:     tp.Data,
+			})
+		}
+	}
+	return &kernel.Message{
+		ID:               m.ID,
+		Role:             kernel.MessageRole(m.Role),
+		SessionID:        m.SessionID,
+		Parts:            parts,
+		Model:            m.Model,
+		Provider:         m.Provider,
+		CreatedAt:        m.CreatedAt,
+		UpdatedAt:        m.UpdatedAt,
+		IsSummaryMessage: m.IsSummaryMessage,
+	}
 }
