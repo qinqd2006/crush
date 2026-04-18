@@ -9,7 +9,7 @@ import (
 	"sync/atomic"
 	"time"
 
-	"github.com/charmbracelet/crush/engine/csync"
+	"github.com/mosaic2025002/crush/engine/csync"
 )
 
 const (

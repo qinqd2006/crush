@@ -13,7 +13,7 @@ import (
 	"charm.land/fantasy"
 	md "github.com/JohannesKaufmann/html-to-markdown"
 	"github.com/PuerkitoBio/goquery"
-	"github.com/charmbracelet/crush/engine/permission"
+	"github.com/mosaic2025002/crush/engine/permission"
 )
 
 const (

@@ -5,7 +5,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/charmbracelet/crush/engine/config"
+	"github.com/mosaic2025002/crush/engine/config"
 	"github.com/invopop/jsonschema"
 	"github.com/stretchr/testify/require"
 )

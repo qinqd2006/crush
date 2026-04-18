@@ -8,9 +8,9 @@ import (
 	"log/slog"
 	"strings"
 
-	"github.com/charmbracelet/crush/engine/db"
-	"github.com/charmbracelet/crush/engine/event"
-	"github.com/charmbracelet/crush/engine/pubsub"
+	"github.com/mosaic2025002/crush/engine/db"
+	"github.com/mosaic2025002/crush/engine/event"
+	"github.com/mosaic2025002/crush/engine/pubsub"
 	"github.com/google/uuid"
 	"github.com/zeebo/xxh3"
 )

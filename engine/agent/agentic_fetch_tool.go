@@ -11,9 +11,9 @@ import (
 
 	"charm.land/fantasy"
 
-	"github.com/charmbracelet/crush/engine/agent/prompt"
-	"github.com/charmbracelet/crush/engine/agent/tools"
-	"github.com/charmbracelet/crush/engine/permission"
+	"github.com/mosaic2025002/crush/engine/agent/prompt"
+	"github.com/mosaic2025002/crush/engine/agent/tools"
+	"github.com/mosaic2025002/crush/engine/permission"
 )
 
 //go:embed templates/agentic_fetch.md

@@ -17,11 +17,11 @@ import (
 	"testing"
 
 	"charm.land/catwalk/pkg/catwalk"
-	"github.com/charmbracelet/crush/engine/agent/hyper"
-	"github.com/charmbracelet/crush/engine/csync"
-	"github.com/charmbracelet/crush/engine/env"
-	"github.com/charmbracelet/crush/engine/fsext"
-	"github.com/charmbracelet/crush/engine/home"
+	"github.com/mosaic2025002/crush/engine/agent/hyper"
+	"github.com/mosaic2025002/crush/engine/csync"
+	"github.com/mosaic2025002/crush/engine/env"
+	"github.com/mosaic2025002/crush/engine/fsext"
+	"github.com/mosaic2025002/crush/engine/home"
 	powernapConfig "github.com/charmbracelet/x/powernap/pkg/config"
 	"github.com/qjebbs/go-jsons"
 )

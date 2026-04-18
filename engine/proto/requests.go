@@ -1,6 +1,6 @@
 package proto
 
-import "github.com/charmbracelet/crush/engine/config"
+import "github.com/mosaic2025002/crush/engine/config"
 
 // ConfigSetRequest represents a request to set a config field.
 type ConfigSetRequest struct {

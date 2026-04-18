@@ -7,7 +7,7 @@ import (
 	"slices"
 	"strings"
 
-	"github.com/charmbracelet/crush/engine/fsext"
+	"github.com/mosaic2025002/crush/engine/fsext"
 )
 
 const (

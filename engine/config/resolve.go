@@ -6,8 +6,8 @@ import (
 	"strings"
 	"time"
 
-	"github.com/charmbracelet/crush/engine/env"
-	"github.com/charmbracelet/crush/engine/shell"
+	"github.com/mosaic2025002/crush/engine/env"
+	"github.com/mosaic2025002/crush/engine/shell"
 )
 
 type VariableResolver interface {

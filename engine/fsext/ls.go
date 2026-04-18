@@ -11,8 +11,8 @@ import (
 	"sync"
 
 	"github.com/charlievieth/fastwalk"
-	"github.com/charmbracelet/crush/engine/csync"
-	"github.com/charmbracelet/crush/engine/home"
+	"github.com/mosaic2025002/crush/engine/csync"
+	"github.com/mosaic2025002/crush/engine/home"
 	gitconfig "github.com/go-git/go-git/v5/config"
 	"github.com/go-git/go-git/v5/plumbing/format/gitignore"
 )

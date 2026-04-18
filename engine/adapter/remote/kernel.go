@@ -8,11 +8,11 @@ import (
 	"sync"
 	"time"
 
-	"github.com/charmbracelet/crush/engine/client"
-	"github.com/charmbracelet/crush/engine/message"
-	"github.com/charmbracelet/crush/engine/proto"
-	"github.com/charmbracelet/crush/engine/pubsub"
-	"github.com/charmbracelet/crush/kernel"
+	"github.com/mosaic2025002/crush/engine/client"
+	"github.com/mosaic2025002/crush/engine/message"
+	"github.com/mosaic2025002/crush/engine/proto"
+	"github.com/mosaic2025002/crush/engine/pubsub"
+	"github.com/mosaic2025002/crush/kernel"
 )
 
 // Compile-time check that RemoteKernel implements kernel.Kernel.

@@ -8,7 +8,7 @@ import (
 	"time"
 
 	tea "charm.land/bubbletea/v2"
-	"github.com/charmbracelet/crush/engine/pubsub"
+	"github.com/mosaic2025002/crush/engine/pubsub"
 	"github.com/stretchr/testify/require"
 	"go.uber.org/goleak"
 )

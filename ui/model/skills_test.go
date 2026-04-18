@@ -3,9 +3,9 @@ package model
 import (
 	"testing"
 
-	"github.com/charmbracelet/crush/engine/skills"
-	"github.com/charmbracelet/crush/ui/common"
-	uistyles "github.com/charmbracelet/crush/ui/styles"
+	"github.com/mosaic2025002/crush/engine/skills"
+	"github.com/mosaic2025002/crush/ui/common"
+	uistyles "github.com/mosaic2025002/crush/ui/styles"
 	"github.com/stretchr/testify/require"
 )
 

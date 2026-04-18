@@ -7,7 +7,7 @@ import (
 
 	"charm.land/catwalk/pkg/catwalk"
 	"charm.land/fantasy"
-	"github.com/charmbracelet/crush/engine/config"
+	"github.com/mosaic2025002/crush/engine/config"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )

@@ -10,12 +10,12 @@ import (
 	"charm.land/bubbles/v2/viewport"
 	tea "charm.land/bubbletea/v2"
 	"charm.land/lipgloss/v2"
-	"github.com/charmbracelet/crush/engine/agent/tools"
-	"github.com/charmbracelet/crush/engine/fsext"
-	"github.com/charmbracelet/crush/engine/permission"
-	"github.com/charmbracelet/crush/engine/stringext"
-	"github.com/charmbracelet/crush/ui/common"
-	"github.com/charmbracelet/crush/ui/styles"
+	"github.com/mosaic2025002/crush/engine/agent/tools"
+	"github.com/mosaic2025002/crush/engine/fsext"
+	"github.com/mosaic2025002/crush/engine/permission"
+	"github.com/mosaic2025002/crush/engine/stringext"
+	"github.com/mosaic2025002/crush/ui/common"
+	"github.com/mosaic2025002/crush/ui/styles"
 	uv "github.com/charmbracelet/ultraviolet"
 )
 

@@ -4,8 +4,8 @@ import (
 	"image"
 
 	"charm.land/lipgloss/v2"
-	"github.com/charmbracelet/crush/ui/common"
-	"github.com/charmbracelet/crush/engine/workspace"
+	"github.com/mosaic2025002/crush/ui/common"
+	"github.com/mosaic2025002/crush/engine/workspace"
 	"github.com/charmbracelet/ultraviolet/layout"
 )
 

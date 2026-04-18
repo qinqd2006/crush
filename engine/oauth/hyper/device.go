@@ -13,9 +13,9 @@ import (
 	"strings"
 	"time"
 
-	"github.com/charmbracelet/crush/engine/agent/hyper"
-	"github.com/charmbracelet/crush/engine/event"
-	"github.com/charmbracelet/crush/engine/oauth"
+	"github.com/mosaic2025002/crush/engine/agent/hyper"
+	"github.com/mosaic2025002/crush/engine/event"
+	"github.com/mosaic2025002/crush/engine/oauth"
 )
 
 // DeviceAuthResponse contains the response from the device authorization endpoint.

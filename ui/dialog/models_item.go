@@ -3,9 +3,9 @@ package dialog
 import (
 	"charm.land/catwalk/pkg/catwalk"
 	"charm.land/lipgloss/v2"
-	"github.com/charmbracelet/crush/engine/config"
-	"github.com/charmbracelet/crush/ui/common"
-	"github.com/charmbracelet/crush/ui/styles"
+	"github.com/mosaic2025002/crush/engine/config"
+	"github.com/mosaic2025002/crush/ui/common"
+	"github.com/mosaic2025002/crush/ui/styles"
 	"github.com/charmbracelet/x/ansi"
 	"github.com/sahilm/fuzzy"
 )

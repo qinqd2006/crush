@@ -9,9 +9,9 @@ import (
 	"strings"
 	"time"
 
-	"github.com/charmbracelet/crush/engine/mcp"
-	"github.com/charmbracelet/crush/engine/config"
-	"github.com/charmbracelet/crush/engine/home"
+	"github.com/mosaic2025002/crush/engine/mcp"
+	"github.com/mosaic2025002/crush/engine/config"
+	"github.com/mosaic2025002/crush/engine/home"
 )
 
 var namedArgPattern = regexp.MustCompile(`\$([A-Z][A-Z0-9_]*)`)

@@ -6,8 +6,8 @@ import (
 	"fmt"
 	"net/http"
 
-	"github.com/charmbracelet/crush/engine/config"
-	"github.com/charmbracelet/crush/engine/oauth"
+	"github.com/mosaic2025002/crush/engine/config"
+	"github.com/mosaic2025002/crush/engine/oauth"
 )
 
 // SetConfigField sets a config key/value pair on the server.

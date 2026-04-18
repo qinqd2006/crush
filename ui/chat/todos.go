@@ -6,10 +6,10 @@ import (
 	"slices"
 	"strings"
 
-	"github.com/charmbracelet/crush/engine/agent/tools"
-	"github.com/charmbracelet/crush/engine/message"
-	"github.com/charmbracelet/crush/engine/session"
-	"github.com/charmbracelet/crush/ui/styles"
+	"github.com/mosaic2025002/crush/engine/agent/tools"
+	"github.com/mosaic2025002/crush/engine/message"
+	"github.com/mosaic2025002/crush/engine/session"
+	"github.com/mosaic2025002/crush/ui/styles"
 	"github.com/charmbracelet/x/ansi"
 )
 

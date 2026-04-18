@@ -10,15 +10,15 @@ import (
 
 	tea "charm.land/bubbletea/v2"
 	"charm.land/catwalk/pkg/catwalk"
-	mcptools "github.com/charmbracelet/crush/engine/mcp"
-	"github.com/charmbracelet/crush/engine/config"
-	"github.com/charmbracelet/crush/engine/history"
-	"github.com/charmbracelet/crush/engine/lsp"
-	"github.com/charmbracelet/crush/engine/message"
-	"github.com/charmbracelet/crush/engine/oauth"
-	"github.com/charmbracelet/crush/engine/permission"
-	"github.com/charmbracelet/crush/engine/session"
-	"github.com/charmbracelet/crush/kernel"
+	mcptools "github.com/mosaic2025002/crush/engine/mcp"
+	"github.com/mosaic2025002/crush/engine/config"
+	"github.com/mosaic2025002/crush/engine/history"
+	"github.com/mosaic2025002/crush/engine/lsp"
+	"github.com/mosaic2025002/crush/engine/message"
+	"github.com/mosaic2025002/crush/engine/oauth"
+	"github.com/mosaic2025002/crush/engine/permission"
+	"github.com/mosaic2025002/crush/engine/session"
+	"github.com/mosaic2025002/crush/kernel"
 )
 
 // LSPClientInfo holds information about an LSP client's state. This is

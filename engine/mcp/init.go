@@ -16,12 +16,12 @@ import (
 	"sync"
 	"time"
 
-	"github.com/charmbracelet/crush/engine/config"
-	"github.com/charmbracelet/crush/engine/csync"
-	"github.com/charmbracelet/crush/engine/home"
-	"github.com/charmbracelet/crush/engine/permission"
-	"github.com/charmbracelet/crush/engine/pubsub"
-	"github.com/charmbracelet/crush/engine/version"
+	"github.com/mosaic2025002/crush/engine/config"
+	"github.com/mosaic2025002/crush/engine/csync"
+	"github.com/mosaic2025002/crush/engine/home"
+	"github.com/mosaic2025002/crush/engine/permission"
+	"github.com/mosaic2025002/crush/engine/pubsub"
+	"github.com/mosaic2025002/crush/engine/version"
 	"github.com/modelcontextprotocol/go-sdk/mcp"
 )
 

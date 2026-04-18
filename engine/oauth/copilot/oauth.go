@@ -11,7 +11,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/charmbracelet/crush/engine/oauth"
+	"github.com/mosaic2025002/crush/engine/oauth"
 )
 
 const (

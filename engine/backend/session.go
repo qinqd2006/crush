@@ -3,9 +3,9 @@ package backend
 import (
 	"context"
 
-	"github.com/charmbracelet/crush/engine/message"
-	"github.com/charmbracelet/crush/engine/proto"
-	"github.com/charmbracelet/crush/engine/session"
+	"github.com/mosaic2025002/crush/engine/message"
+	"github.com/mosaic2025002/crush/engine/proto"
+	"github.com/mosaic2025002/crush/engine/session"
 )
 
 // CreateSession creates a new session in the given workspace.

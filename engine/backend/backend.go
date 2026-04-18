@@ -10,12 +10,12 @@ import (
 	"log/slog"
 	"runtime"
 
-	"github.com/charmbracelet/crush/engine/app"
-	"github.com/charmbracelet/crush/engine/config"
-	"github.com/charmbracelet/crush/engine/csync"
-	"github.com/charmbracelet/crush/engine/db"
-	"github.com/charmbracelet/crush/engine/proto"
-	"github.com/charmbracelet/crush/engine/version"
+	"github.com/mosaic2025002/crush/engine/app"
+	"github.com/mosaic2025002/crush/engine/config"
+	"github.com/mosaic2025002/crush/engine/csync"
+	"github.com/mosaic2025002/crush/engine/db"
+	"github.com/mosaic2025002/crush/engine/proto"
+	"github.com/mosaic2025002/crush/engine/version"
 	"github.com/google/uuid"
 )
 

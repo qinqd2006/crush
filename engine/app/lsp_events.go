@@ -4,9 +4,9 @@ import (
 	"context"
 	"time"
 
-	"github.com/charmbracelet/crush/engine/csync"
-	"github.com/charmbracelet/crush/engine/lsp"
-	"github.com/charmbracelet/crush/engine/pubsub"
+	"github.com/mosaic2025002/crush/engine/csync"
+	"github.com/mosaic2025002/crush/engine/lsp"
+	"github.com/mosaic2025002/crush/engine/pubsub"
 )
 
 // LSPEventType represents the type of LSP event

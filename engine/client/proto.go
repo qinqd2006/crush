@@ -13,10 +13,10 @@ import (
 	"net/url"
 	"time"
 
-	"github.com/charmbracelet/crush/engine/config"
-	"github.com/charmbracelet/crush/engine/message"
-	"github.com/charmbracelet/crush/engine/proto"
-	"github.com/charmbracelet/crush/engine/pubsub"
+	"github.com/mosaic2025002/crush/engine/config"
+	"github.com/mosaic2025002/crush/engine/message"
+	"github.com/mosaic2025002/crush/engine/proto"
+	"github.com/mosaic2025002/crush/engine/pubsub"
 	"github.com/charmbracelet/x/powernap/pkg/lsp/protocol"
 )
 

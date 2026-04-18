@@ -10,9 +10,9 @@ import (
 	"charm.land/bubbles/v2/textinput"
 	tea "charm.land/bubbletea/v2"
 	"charm.land/catwalk/pkg/catwalk"
-	"github.com/charmbracelet/crush/engine/config"
-	"github.com/charmbracelet/crush/ui/common"
-	"github.com/charmbracelet/crush/ui/util"
+	"github.com/mosaic2025002/crush/engine/config"
+	"github.com/mosaic2025002/crush/ui/common"
+	"github.com/mosaic2025002/crush/ui/util"
 	uv "github.com/charmbracelet/ultraviolet"
 )
 

@@ -5,11 +5,11 @@ import (
 	"strings"
 
 	"charm.land/lipgloss/v2"
-	"github.com/charmbracelet/crush/engine/config"
-	"github.com/charmbracelet/crush/engine/fsext"
-	"github.com/charmbracelet/crush/engine/session"
-	"github.com/charmbracelet/crush/ui/common"
-	"github.com/charmbracelet/crush/ui/styles"
+	"github.com/mosaic2025002/crush/engine/config"
+	"github.com/mosaic2025002/crush/engine/fsext"
+	"github.com/mosaic2025002/crush/engine/session"
+	"github.com/mosaic2025002/crush/ui/common"
+	"github.com/mosaic2025002/crush/ui/styles"
 	uv "github.com/charmbracelet/ultraviolet"
 	"github.com/charmbracelet/x/ansi"
 )

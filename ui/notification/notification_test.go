@@ -3,7 +3,7 @@ package notification_test
 import (
 	"testing"
 
-	"github.com/charmbracelet/crush/ui/notification"
+	"github.com/mosaic2025002/crush/ui/notification"
 	"github.com/stretchr/testify/require"
 )
 

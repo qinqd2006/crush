@@ -14,10 +14,10 @@ import (
 	"time"
 
 	"charm.land/catwalk/pkg/catwalk"
-	"github.com/charmbracelet/crush/engine/csync"
-	"github.com/charmbracelet/crush/engine/env"
-	"github.com/charmbracelet/crush/engine/oauth"
-	"github.com/charmbracelet/crush/engine/oauth/copilot"
+	"github.com/mosaic2025002/crush/engine/csync"
+	"github.com/mosaic2025002/crush/engine/env"
+	"github.com/mosaic2025002/crush/engine/oauth"
+	"github.com/mosaic2025002/crush/engine/oauth/copilot"
 	"github.com/invopop/jsonschema"
 )
 

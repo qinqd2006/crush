@@ -12,7 +12,7 @@ import (
 	"sync"
 
 	tea "charm.land/bubbletea/v2"
-	"github.com/charmbracelet/crush/ui/util"
+	"github.com/mosaic2025002/crush/ui/util"
 	"github.com/charmbracelet/x/ansi"
 	"github.com/charmbracelet/x/ansi/kitty"
 	"github.com/disintegration/imaging"

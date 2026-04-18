@@ -7,7 +7,7 @@ import (
 	"testing"
 
 	"github.com/alecthomas/chroma/v2/styles"
-	"github.com/charmbracelet/crush/ui/diffview"
+	"github.com/mosaic2025002/crush/ui/diffview"
 	"github.com/charmbracelet/x/ansi"
 	"github.com/charmbracelet/x/exp/golden"
 )

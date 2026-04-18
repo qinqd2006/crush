@@ -8,7 +8,7 @@ import (
 	"sync"
 	"time"
 
-	"github.com/charmbracelet/crush/engine/config"
+	"github.com/mosaic2025002/crush/engine/config"
 )
 
 const projectsFileName = "projects.json"

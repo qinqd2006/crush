@@ -15,7 +15,7 @@ import (
 	"strings"
 
 	"charm.land/fantasy"
-	"github.com/charmbracelet/crush/engine/lsp"
+	"github.com/mosaic2025002/crush/engine/lsp"
 	"github.com/charmbracelet/x/powernap/pkg/lsp/protocol"
 )
 

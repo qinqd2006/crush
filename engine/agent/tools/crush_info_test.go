@@ -9,11 +9,11 @@ import (
 	"time"
 
 	"charm.land/catwalk/pkg/catwalk"
-	"github.com/charmbracelet/crush/engine/mcp"
-	"github.com/charmbracelet/crush/engine/config"
-	"github.com/charmbracelet/crush/engine/csync"
-	"github.com/charmbracelet/crush/engine/lsp"
-	"github.com/charmbracelet/crush/engine/skills"
+	"github.com/mosaic2025002/crush/engine/mcp"
+	"github.com/mosaic2025002/crush/engine/config"
+	"github.com/mosaic2025002/crush/engine/csync"
+	"github.com/mosaic2025002/crush/engine/lsp"
+	"github.com/mosaic2025002/crush/engine/skills"
 	"github.com/stretchr/testify/require"
 )
 

@@ -6,7 +6,7 @@ import (
 	"fmt"
 
 	"charm.land/fantasy"
-	"github.com/charmbracelet/crush/engine/shell"
+	"github.com/mosaic2025002/crush/engine/shell"
 )
 
 const (

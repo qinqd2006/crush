@@ -10,11 +10,11 @@ import (
 	"slices"
 
 	"charm.land/catwalk/pkg/catwalk"
-	hyperp "github.com/charmbracelet/crush/engine/agent/hyper"
-	"github.com/charmbracelet/crush/engine/env"
-	"github.com/charmbracelet/crush/engine/oauth"
-	"github.com/charmbracelet/crush/engine/oauth/copilot"
-	"github.com/charmbracelet/crush/engine/oauth/hyper"
+	hyperp "github.com/mosaic2025002/crush/engine/agent/hyper"
+	"github.com/mosaic2025002/crush/engine/env"
+	"github.com/mosaic2025002/crush/engine/oauth"
+	"github.com/mosaic2025002/crush/engine/oauth/copilot"
+	"github.com/mosaic2025002/crush/engine/oauth/hyper"
 	"github.com/tidwall/gjson"
 	"github.com/tidwall/sjson"
 )

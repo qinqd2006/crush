@@ -10,9 +10,9 @@ import (
 	"charm.land/bubbles/v2/key"
 	tea "charm.land/bubbletea/v2"
 	"charm.land/lipgloss/v2"
-	"github.com/charmbracelet/crush/engine/mcp"
-	"github.com/charmbracelet/crush/engine/fsext"
-	"github.com/charmbracelet/crush/ui/list"
+	"github.com/mosaic2025002/crush/engine/mcp"
+	"github.com/mosaic2025002/crush/engine/fsext"
+	"github.com/mosaic2025002/crush/ui/list"
 	"github.com/charmbracelet/x/ansi"
 	"github.com/charmbracelet/x/exp/ordered"
 )

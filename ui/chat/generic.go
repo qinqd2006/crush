@@ -4,9 +4,9 @@ import (
 	"encoding/json"
 	"strings"
 
-	"github.com/charmbracelet/crush/engine/message"
-	"github.com/charmbracelet/crush/engine/stringext"
-	"github.com/charmbracelet/crush/ui/styles"
+	"github.com/mosaic2025002/crush/engine/message"
+	"github.com/mosaic2025002/crush/engine/stringext"
+	"github.com/mosaic2025002/crush/ui/styles"
 )
 
 // GenericToolMessageItem is a message item that represents an unknown tool call.

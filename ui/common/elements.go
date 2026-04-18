@@ -7,8 +7,8 @@ import (
 	"strings"
 
 	"charm.land/lipgloss/v2"
-	"github.com/charmbracelet/crush/engine/home"
-	"github.com/charmbracelet/crush/ui/styles"
+	"github.com/mosaic2025002/crush/engine/home"
+	"github.com/mosaic2025002/crush/ui/styles"
 	"github.com/charmbracelet/x/ansi"
 	"golang.org/x/text/cases"
 	"golang.org/x/text/language"

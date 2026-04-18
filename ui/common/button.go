@@ -4,7 +4,7 @@ import (
 	"strings"
 
 	"charm.land/lipgloss/v2"
-	"github.com/charmbracelet/crush/ui/styles"
+	"github.com/mosaic2025002/crush/ui/styles"
 )
 
 // ButtonOpts defines the configuration for a single button

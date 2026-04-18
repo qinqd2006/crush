@@ -6,7 +6,7 @@ import (
 	"os"
 	"path/filepath"
 
-	"github.com/charmbracelet/crush/engine/home"
+	"github.com/mosaic2025002/crush/engine/home"
 )
 
 // Lookup searches for a target files or directories starting from dir

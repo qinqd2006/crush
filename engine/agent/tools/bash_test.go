@@ -6,10 +6,10 @@ import (
 	"testing"
 
 	"charm.land/fantasy"
-	"github.com/charmbracelet/crush/engine/config"
-	"github.com/charmbracelet/crush/engine/permission"
-	"github.com/charmbracelet/crush/engine/pubsub"
-	"github.com/charmbracelet/crush/engine/shell"
+	"github.com/mosaic2025002/crush/engine/config"
+	"github.com/mosaic2025002/crush/engine/permission"
+	"github.com/mosaic2025002/crush/engine/pubsub"
+	"github.com/mosaic2025002/crush/engine/shell"
 	"github.com/stretchr/testify/require"
 )
 

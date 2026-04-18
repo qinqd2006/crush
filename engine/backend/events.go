@@ -5,9 +5,9 @@ import (
 
 	tea "charm.land/bubbletea/v2"
 
-	mcptools "github.com/charmbracelet/crush/engine/mcp"
-	"github.com/charmbracelet/crush/engine/app"
-	"github.com/charmbracelet/crush/engine/config"
+	mcptools "github.com/mosaic2025002/crush/engine/mcp"
+	"github.com/mosaic2025002/crush/engine/app"
+	"github.com/mosaic2025002/crush/engine/config"
 )
 
 // SubscribeEvents returns the event channel for a workspace's app.

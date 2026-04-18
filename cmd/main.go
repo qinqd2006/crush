@@ -6,7 +6,7 @@
 //	@contact.name	Charm
 //	@contact.url	https://charm.sh
 //	@license.name	MIT
-//	@license.url	https://github.com/charmbracelet/crush/blob/main/LICENSE
+//	@license.url	https://github.com/mosaic2025002/crush/blob/main/LICENSE
 //	@BasePath		/v1
 package main
 

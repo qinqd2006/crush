@@ -13,7 +13,7 @@ import (
 	"charm.land/fantasy/providers/anthropic"
 	"charm.land/fantasy/providers/google"
 	"charm.land/fantasy/providers/openai"
-	"github.com/charmbracelet/crush/engine/stringext"
+	"github.com/mosaic2025002/crush/engine/stringext"
 )
 
 type MessageRole string

@@ -3,10 +3,10 @@ package chat
 import (
 	"encoding/json"
 
-	"github.com/charmbracelet/crush/engine/agent/tools"
-	"github.com/charmbracelet/crush/engine/fsext"
-	"github.com/charmbracelet/crush/engine/message"
-	"github.com/charmbracelet/crush/ui/styles"
+	"github.com/mosaic2025002/crush/engine/agent/tools"
+	"github.com/mosaic2025002/crush/engine/fsext"
+	"github.com/mosaic2025002/crush/engine/message"
+	"github.com/mosaic2025002/crush/ui/styles"
 )
 
 // ReferencesToolMessageItem is a message item that represents a references tool call.

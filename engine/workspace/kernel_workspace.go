@@ -6,7 +6,7 @@ import (
 	"sync"
 
 	tea "charm.land/bubbletea/v2"
-	"github.com/charmbracelet/crush/kernel"
+	"github.com/mosaic2025002/crush/kernel"
 )
 
 // KernelWorkspace implements the Workspace interface by delegating

@@ -7,10 +7,10 @@ import (
 
 	tea "charm.land/bubbletea/v2"
 	"github.com/atotto/clipboard"
-	"github.com/charmbracelet/crush/engine/config"
-	"github.com/charmbracelet/crush/ui/styles"
-	"github.com/charmbracelet/crush/ui/util"
-	"github.com/charmbracelet/crush/engine/workspace"
+	"github.com/mosaic2025002/crush/engine/config"
+	"github.com/mosaic2025002/crush/ui/styles"
+	"github.com/mosaic2025002/crush/ui/util"
+	"github.com/mosaic2025002/crush/engine/workspace"
 	uv "github.com/charmbracelet/ultraviolet"
 )
 

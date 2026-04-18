@@ -2,8 +2,8 @@ package common
 
 import (
 	"github.com/alecthomas/chroma/v2"
-	"github.com/charmbracelet/crush/ui/diffview"
-	"github.com/charmbracelet/crush/ui/styles"
+	"github.com/mosaic2025002/crush/ui/diffview"
+	"github.com/mosaic2025002/crush/ui/styles"
 )
 
 // DiffFormatter returns a diff formatter with the given styles that can be

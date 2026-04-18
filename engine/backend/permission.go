@@ -1,8 +1,8 @@
 package backend
 
 import (
-	"github.com/charmbracelet/crush/engine/permission"
-	"github.com/charmbracelet/crush/engine/proto"
+	"github.com/mosaic2025002/crush/engine/permission"
+	"github.com/mosaic2025002/crush/engine/proto"
 )
 
 // GrantPermission grants, denies, or persistently grants a permission

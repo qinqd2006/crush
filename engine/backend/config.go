@@ -5,11 +5,11 @@ import (
 	"errors"
 	"fmt"
 
-	"github.com/charmbracelet/crush/engine/agent"
-	mcptools "github.com/charmbracelet/crush/engine/mcp"
-	"github.com/charmbracelet/crush/engine/commands"
-	"github.com/charmbracelet/crush/engine/config"
-	"github.com/charmbracelet/crush/engine/oauth"
+	"github.com/mosaic2025002/crush/engine/agent"
+	mcptools "github.com/mosaic2025002/crush/engine/mcp"
+	"github.com/mosaic2025002/crush/engine/commands"
+	"github.com/mosaic2025002/crush/engine/config"
+	"github.com/mosaic2025002/crush/engine/oauth"
 )
 
 // MCPResourceContents holds the contents of an MCP resource returned

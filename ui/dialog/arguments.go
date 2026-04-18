@@ -14,9 +14,9 @@ import (
 	"golang.org/x/text/cases"
 	"golang.org/x/text/language"
 
-	"github.com/charmbracelet/crush/engine/commands"
-	"github.com/charmbracelet/crush/ui/common"
-	"github.com/charmbracelet/crush/ui/util"
+	"github.com/mosaic2025002/crush/engine/commands"
+	"github.com/mosaic2025002/crush/ui/common"
+	"github.com/mosaic2025002/crush/ui/util"
 	uv "github.com/charmbracelet/ultraviolet"
 )
 

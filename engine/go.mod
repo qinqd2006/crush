@@ -1,10 +1,6 @@
-module github.com/charmbracelet/crush/engine
+module github.com/mosaic2025002/crush/engine
 
 go 1.26.2
-
-require github.com/charmbracelet/crush/kernel v0.0.0
-
-replace github.com/charmbracelet/crush/kernel => ../kernel
 
 require (
 	charm.land/bubbletea/v2 v2.0.6

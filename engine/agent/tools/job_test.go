@@ -6,7 +6,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/charmbracelet/crush/engine/shell"
+	"github.com/mosaic2025002/crush/engine/shell"
 	"github.com/stretchr/testify/require"
 )
 

@@ -12,10 +12,10 @@ import (
 	"text/template"
 	"time"
 
-	"github.com/charmbracelet/crush/engine/config"
-	"github.com/charmbracelet/crush/engine/home"
-	"github.com/charmbracelet/crush/engine/shell"
-	"github.com/charmbracelet/crush/engine/skills"
+	"github.com/mosaic2025002/crush/engine/config"
+	"github.com/mosaic2025002/crush/engine/home"
+	"github.com/mosaic2025002/crush/engine/shell"
+	"github.com/mosaic2025002/crush/engine/skills"
 )
 
 // Prompt represents a template-based prompt generator.

@@ -11,9 +11,9 @@ import (
 
 	"charm.land/fantasy"
 	"charm.land/x/vcr"
-	"github.com/charmbracelet/crush/engine/agent/tools"
-	"github.com/charmbracelet/crush/engine/message"
-	"github.com/charmbracelet/crush/engine/session"
+	"github.com/mosaic2025002/crush/engine/agent/tools"
+	"github.com/mosaic2025002/crush/engine/message"
+	"github.com/mosaic2025002/crush/engine/session"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 

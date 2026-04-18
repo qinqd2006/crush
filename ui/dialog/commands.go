@@ -9,11 +9,11 @@ import (
 	"charm.land/bubbles/v2/spinner"
 	"charm.land/bubbles/v2/textinput"
 	tea "charm.land/bubbletea/v2"
-	"github.com/charmbracelet/crush/engine/commands"
-	"github.com/charmbracelet/crush/engine/config"
-	"github.com/charmbracelet/crush/ui/common"
-	"github.com/charmbracelet/crush/ui/list"
-	"github.com/charmbracelet/crush/ui/styles"
+	"github.com/mosaic2025002/crush/engine/commands"
+	"github.com/mosaic2025002/crush/engine/config"
+	"github.com/mosaic2025002/crush/ui/common"
+	"github.com/mosaic2025002/crush/ui/list"
+	"github.com/mosaic2025002/crush/ui/styles"
 	uv "github.com/charmbracelet/ultraviolet"
 )
 

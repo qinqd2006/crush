@@ -5,15 +5,15 @@ import (
 	"fmt"
 	"log/slog"
 
-	"github.com/charmbracelet/crush/engine/agent/notify"
-	"github.com/charmbracelet/crush/engine/mcp"
-	"github.com/charmbracelet/crush/engine/app"
-	"github.com/charmbracelet/crush/engine/history"
-	"github.com/charmbracelet/crush/engine/message"
-	"github.com/charmbracelet/crush/engine/permission"
-	"github.com/charmbracelet/crush/engine/proto"
-	"github.com/charmbracelet/crush/engine/pubsub"
-	"github.com/charmbracelet/crush/engine/session"
+	"github.com/mosaic2025002/crush/engine/agent/notify"
+	"github.com/mosaic2025002/crush/engine/mcp"
+	"github.com/mosaic2025002/crush/engine/app"
+	"github.com/mosaic2025002/crush/engine/history"
+	"github.com/mosaic2025002/crush/engine/message"
+	"github.com/mosaic2025002/crush/engine/permission"
+	"github.com/mosaic2025002/crush/engine/proto"
+	"github.com/mosaic2025002/crush/engine/pubsub"
+	"github.com/mosaic2025002/crush/engine/session"
 )
 
 // wrapEvent converts a raw tea.Msg (a pubsub.Event[T] from the app

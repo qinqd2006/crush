@@ -9,13 +9,13 @@ import (
 	tea "charm.land/bubbletea/v2"
 	"charm.land/catwalk/pkg/catwalk"
 	"charm.land/lipgloss/v2"
-	"github.com/charmbracelet/crush/engine/config"
-	"github.com/charmbracelet/crush/engine/message"
-	"github.com/charmbracelet/crush/ui/anim"
-	"github.com/charmbracelet/crush/ui/attachments"
-	"github.com/charmbracelet/crush/ui/common"
-	"github.com/charmbracelet/crush/ui/list"
-	"github.com/charmbracelet/crush/ui/styles"
+	"github.com/mosaic2025002/crush/engine/config"
+	"github.com/mosaic2025002/crush/engine/message"
+	"github.com/mosaic2025002/crush/ui/anim"
+	"github.com/mosaic2025002/crush/ui/attachments"
+	"github.com/mosaic2025002/crush/ui/common"
+	"github.com/mosaic2025002/crush/ui/list"
+	"github.com/mosaic2025002/crush/ui/styles"
 )
 
 // MessageLeftPaddingTotal is the total width that is taken up by the border +
