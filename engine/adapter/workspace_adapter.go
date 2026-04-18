@@ -73,6 +73,16 @@ func (a *WorkspaceAdapter) IsSessionBusy(sessionID string) bool {
 	return a.impl.AgentIsSessionBusy(sessionID)
 }
 
+// AgentIsReady is an alias for IsBusy for backwards compatibility.
+func (a *WorkspaceAdapter) AgentIsReady() bool {
+	return a.impl.AgentIsReady()
+}
+
+// AgentIsSessionBusy is an alias for IsSessionBusy for backwards compatibility.
+func (a *WorkspaceAdapter) AgentIsSessionBusy(sessionID string) bool {
+	return a.impl.AgentIsSessionBusy(sessionID)
+}
+
 func (a *WorkspaceAdapter) QueuedPrompts(sessionID string) int {
 	return a.impl.AgentQueuedPrompts(sessionID)
 }
@@ -520,6 +530,11 @@ func (r *ResolverAdapter) Resolve(key string) (string, bool) {
 
 func (a *WorkspaceAdapter) Config() kernel.ConfigProvider {
 	return &ConfigAdapter{cfg: a.impl.Config()}
+}
+
+// EngineConfig returns the underlying engine config for backwards compatibility.
+func (a *WorkspaceAdapter) EngineConfig() *config.Config {
+	return a.impl.Config()
 }
 
 func (a *WorkspaceAdapter) WorkingDir() string {

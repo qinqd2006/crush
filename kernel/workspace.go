@@ -46,6 +46,12 @@ type Workspace interface {
 	// IsSessionBusy returns true if the agent is processing a request for this session.
 	IsSessionBusy(sessionID string) bool
 
+	// AgentIsReady is an alias for IsBusy for backwards compatibility.
+	AgentIsReady() bool
+
+	// AgentIsSessionBusy is an alias for IsSessionBusy for backwards compatibility.
+	AgentIsSessionBusy(sessionID string) bool
+
 	// QueuedPrompts returns the number of queued prompts for a session.
 	QueuedPrompts(sessionID string) int
 

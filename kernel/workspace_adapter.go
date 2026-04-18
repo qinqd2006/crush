@@ -136,6 +136,16 @@ func (w *WorkspaceAdapter) IsSessionBusy(sessionID string) bool {
 	return w.impl.IsSessionBusy(sessionID)
 }
 
+// AgentIsReady is an alias for IsBusy for backwards compatibility.
+func (w *WorkspaceAdapter) AgentIsReady() bool {
+	return w.impl.IsBusy()
+}
+
+// AgentIsSessionBusy is an alias for IsSessionBusy for backwards compatibility.
+func (w *WorkspaceAdapter) AgentIsSessionBusy(sessionID string) bool {
+	return w.impl.IsSessionBusy(sessionID)
+}
+
 func (w *WorkspaceAdapter) QueuedPrompts(sessionID string) int {
 	return w.impl.QueuedPrompts(sessionID)
 }
