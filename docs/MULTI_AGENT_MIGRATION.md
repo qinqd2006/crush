@@ -147,53 +147,48 @@ agents/
 
 ## Type Mapping Reference
 
-| Engine Type | Kernel Type | Notes |
-|------------|-------------|-------|
-| `message.Message` | `kernel.Message` | Similar structure |
-| `message.Attachment` | `kernel.Attachment` | Same fields |
-| `session.Session` | `kernel.Session` | Similar structure |
-| `config.Config` | `kernel.ConfigProvider` | Interface change |
-| `message.TextContent` | `kernel.TextContent` | Same |
-| `message.ToolCall` | `kernel.ToolCallContent` | Renamed |
-| `message.ToolResult` | `kernel.ToolResultContent` | Renamed |
-| `message.Finish` | `kernel.FinishContent` | Renamed |
+| Engine Type | Kernel Type | Adapter Method |
+|------------|-------------|---------------|
+| `message.Message` | `kernel.Message` | `messageToKernel()` |
+| `message.Attachment` | `kernel.Attachment` | Manual conversion |
+| `session.Session` | `kernel.Session` | `sessionToKernel()` |
+| `config.Config` | `kernel.ConfigProvider` | `ConfigAdapter` |
+| `message.TextContent` | `kernel.TextContent` | Direct copy |
+| `message.ToolCall` | `kernel.ToolCallContent` | Field rename |
+| `message.ToolResult` | `kernel.ToolResultContent` | Field rename |
+| `message.Finish` | `kernel.FinishContent` | Field rename |
+| `message.ImageURLContent` | `kernel.ImageURLContent` | Direct copy |
+| `message.BinaryContent` | `kernel.BinaryContent` | Direct copy |
 
-## Method Differences
+## Key Adapters
 
-### Message Methods
+### WorkspaceAdapter (`engine/adapter/workspace_adapter.go`)
 
-```go
-// engine/message.Message
-func (m *Message) Content() TextContent
-func (m *Message) ToolCalls() []ToolCall
-func (m *Message) ToolResults() []ToolResult
-func (m *Message) FinishPart() *Finish
-
-// kernel.Message
-func (m *Message) Content() TextContent        // Same
-func (m *Message) ToolCalls() []ToolCallContent // Different return type
-func (m *Message) ToolResults() []ToolResultContent // Different return type
-func (m *Message) FinishPart() *FinishContent  // Different return type
-```
-
-## Building the Adapter Layer
-
-To use kernel types with existing engine implementations, create adapters in `engine/adapter/`:
+Provides `kernel.Workspace` implementation wrapping engine workspace:
 
 ```go
-// engine/adapter/workspace_adapter.go
 type WorkspaceAdapter struct {
-    engineWs *workspace.Workspace
+    impl workspace.Workspace  // Engine's workspace interface
 }
 
-func (a *WorkspaceAdapter) ListMessages(ctx context.Context, sessionID string) ([]kernel.Message, error) {
-    msgs, err := a.engineWs.ListMessages(ctx, sessionID)
-    if err != nil {
-        return nil, err
-    }
-    return ConvertMessagesToKernel(msgs), nil
+func NewWorkspaceAdapter(impl workspace.Workspace) *WorkspaceAdapter
+```
+
+### ConfigAdapter (`engine/adapter/workspace_adapter.go`)
+
+Wraps `*config.Config` to implement `kernel.ConfigProvider`:
+
+```go
+type ConfigAdapter struct {
+    cfg *config.Config
 }
 ```
+
+### ResolverAdapter (`engine/adapter/workspace_adapter.go`)
+
+Converts between engine and kernel variable resolver signatures:
+- Engine: `ResolveValue(key) (string, error)`
+- Kernel: `Resolve(key) (string, bool)`
 
 ## Testing
 
