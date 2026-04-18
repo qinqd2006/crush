@@ -2,8 +2,6 @@ package kernel
 
 import (
 	"context"
-
-	tea "charm.land/bubbletea/v2"
 )
 
 // ============================================================================
@@ -273,10 +271,10 @@ type Workspace interface {
 	// ------------------------------------------------------------------------
 
 	// Subscribe subscribes to workspace events.
-	Subscribe(program *tea.Program)
+	Subscribe(program Program)
 
 	// KernelSubscribe subscribes to kernel-level events.
-	KernelSubscribe(program *tea.Program)
+	KernelSubscribe(program Program)
 
 	// ------------------------------------------------------------------------
 	// Lifecycle
@@ -289,6 +287,12 @@ type Workspace interface {
 // ============================================================================
 // Supporting Types
 // ============================================================================
+
+// Program represents the Bubble Tea program for event subscription.
+// This is a minimal interface to avoid importing bubbletea into kernel.
+type Program interface {
+	Send(msg any)
+}
 
 // Scope represents a configuration scope.
 type Scope string

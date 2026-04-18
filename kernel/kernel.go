@@ -126,6 +126,23 @@ type ToolResultContent struct {
 
 func (ToolResultContent) isPart() {}
 
+// ImageURLContent represents an image from a URL.
+type ImageURLContent struct {
+	URL    string `json:"url"`
+	Detail string `json:"detail,omitempty"`
+}
+
+func (ImageURLContent) isPart() {}
+
+// BinaryContent represents binary data like images.
+type BinaryContent struct {
+	Path     string
+	MIMEType string
+	Data     []byte
+}
+
+func (BinaryContent) isPart() {}
+
 // FinishContent represents the end of a message.
 type FinishContent struct {
 	Reason  FinishReason `json:"reason"`
@@ -416,6 +433,28 @@ func (m *Message) ReasoningContent() ReasoningContent {
 		}
 	}
 	return ReasoningContent{}
+}
+
+// ImageURLContents returns all image URL contents in the message.
+func (m *Message) ImageURLContents() []ImageURLContent {
+	var contents []ImageURLContent
+	for _, part := range m.Parts {
+		if c, ok := part.(ImageURLContent); ok {
+			contents = append(contents, c)
+		}
+	}
+	return contents
+}
+
+// BinaryContents returns all binary contents in the message.
+func (m *Message) BinaryContents() []BinaryContent {
+	var contents []BinaryContent
+	for _, part := range m.Parts {
+		if c, ok := part.(BinaryContent); ok {
+			contents = append(contents, c)
+		}
+	}
+	return contents
 }
 
 // IsImage returns true if the message has image content.
