@@ -15,9 +15,9 @@ import (
 	"time"
 
 	"github.com/pkg/browser"
-	"github.com/qinqd2006/crush/engine/config"
-	"github.com/qinqd2006/crush/engine/db"
-	"github.com/qinqd2006/crush/engine/event"
+	"github.com/qinqd2006/crush/crush-agent/config"
+	"github.com/qinqd2006/crush/crush-agent/db"
+	"github.com/qinqd2006/crush/crush-agent/event"
 	"github.com/spf13/cobra"
 )
 

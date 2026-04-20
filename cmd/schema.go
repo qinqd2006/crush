@@ -5,7 +5,7 @@ import (
 	"fmt"
 
 	"github.com/invopop/jsonschema"
-	"github.com/qinqd2006/crush/engine/config"
+	"github.com/qinqd2006/crush/crush-agent/config"
 	"github.com/spf13/cobra"
 )
 

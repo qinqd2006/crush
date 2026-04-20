@@ -11,12 +11,12 @@ import (
 	"github.com/atotto/clipboard"
 	"github.com/charmbracelet/x/ansi"
 	"github.com/pkg/browser"
-	hyperp "github.com/qinqd2006/crush/engine/agent/hyper"
-	"github.com/qinqd2006/crush/engine/client"
-	"github.com/qinqd2006/crush/engine/config"
-	"github.com/qinqd2006/crush/engine/oauth"
-	"github.com/qinqd2006/crush/engine/oauth/copilot"
-	"github.com/qinqd2006/crush/engine/oauth/hyper"
+	hyperp "github.com/qinqd2006/crush/crush-agent/agent/hyper"
+	"github.com/qinqd2006/crush/crush-agent/client"
+	"github.com/qinqd2006/crush/crush-agent/config"
+	"github.com/qinqd2006/crush/crush-agent/oauth"
+	"github.com/qinqd2006/crush/crush-agent/oauth/copilot"
+	"github.com/qinqd2006/crush/crush-agent/oauth/hyper"
 	"github.com/spf13/cobra"
 )
 

@@ -18,7 +18,7 @@ require (
 	github.com/invopop/jsonschema v0.13.0
 	github.com/joho/godotenv v1.5.1
 	github.com/mattn/go-isatty v0.0.21
-	github.com/qinqd2006/crush/engine v0.59.0
+	qinqd2006github.com/qinqd2006/crush/crush-agent v0.59.0
 	github.com/qinqd2006/crush/infra v0.59.0
 	github.com/qinqd2006/crush/ui v0.59.0
 	github.com/nxadm/tail v1.4.11

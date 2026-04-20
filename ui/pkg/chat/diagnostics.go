@@ -1,0 +1,67 @@
+package chat
+
+import (
+	"encoding/json"
+
+	"github.com/qinqd2006/crush/infra/pkg/fsext"
+	"github.com/qinqd2006/crush/kernel/pkg"
+	"github.com/qinqd2006/crush/ui/pkg/styles"
+)
+
+// -----------------------------------------------------------------------------
+// Diagnostics Tool
+// -----------------------------------------------------------------------------
+
+// DiagnosticsToolMessageItem is a message item that represents a diagnostics tool call.
+type DiagnosticsToolMessageItem struct {
+	*baseToolMessageItem
+}
+
+var _ ToolMessageItem = (*DiagnosticsToolMessageItem)(nil)
+
+// NewDiagnosticsToolMessageItem creates a new [DiagnosticsToolMessageItem].
+func NewDiagnosticsToolMessageItem(
+	sty *styles.Styles,
+	toolCall kernel.ToolCallContent,
+	result *kernel.ToolResultContent,
+	canceled bool,
+) ToolMessageItem {
+	return newBaseToolMessageItem(sty, toolCall, result, &DiagnosticsToolRenderContext{}, canceled)
+}
+
+// DiagnosticsToolRenderContext renders diagnostics tool messages.
+type DiagnosticsToolRenderContext struct{}
+
+// RenderTool implements the [ToolRenderer] interface.
+func (d *DiagnosticsToolRenderContext) RenderTool(sty *styles.Styles, width int, opts *ToolRenderOpts) string {
+	cappedWidth := cappedMessageWidth(width)
+	if opts.IsPending() {
+		return pendingTool(sty, "Diagnostics", opts.Anim, opts.Compact)
+	}
+
+	var params kernel.DiagnosticsParams
+	_ = json.Unmarshal([]byte(opts.ToolCall.Input), &params)
+
+	// Show "project" if no file path, otherwise show the file path.
+	mainParam := "project"
+	if params.FilePath != "" {
+		mainParam = fsext.PrettyPath(params.FilePath)
+	}
+
+	header := toolHeader(sty, opts.Status, "Diagnostics", cappedWidth, opts.Compact, mainParam)
+	if opts.Compact {
+		return header
+	}
+
+	if earlyState, ok := toolEarlyStateContent(sty, opts, cappedWidth); ok {
+		return joinToolParts(header, earlyState)
+	}
+
+	if opts.HasEmptyResult() {
+		return header
+	}
+
+	bodyWidth := cappedWidth - toolBodyLeftPaddingTotal
+	body := sty.Tool.Body.Render(toolOutputPlainContent(sty, opts.Result.Content, bodyWidth, opts.ExpandedContent))
+	return joinToolParts(header, body)
+}

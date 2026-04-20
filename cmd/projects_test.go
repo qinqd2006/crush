@@ -5,7 +5,7 @@ import (
 	"encoding/json"
 	"testing"
 
-	"github.com/qinqd2006/crush/engine/projects"
+	"github.com/qinqd2006/crush/crush-agent/projects"
 	"github.com/stretchr/testify/require"
 )
 

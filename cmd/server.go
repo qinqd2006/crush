@@ -11,9 +11,9 @@ import (
 	"time"
 
 	"github.com/charmbracelet/x/term"
-	"github.com/qinqd2006/crush/engine/config"
-	crushlog "github.com/qinqd2006/crush/engine/log"
-	"github.com/qinqd2006/crush/engine/server"
+	"github.com/qinqd2006/crush/crush-agent/config"
+	crushlog "github.com/qinqd2006/crush/crush-agent/log"
+	"github.com/qinqd2006/crush/crush-agent/server"
 	"github.com/spf13/cobra"
 )
 

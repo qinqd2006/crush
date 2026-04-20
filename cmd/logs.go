@@ -14,7 +14,7 @@ import (
 	"github.com/charmbracelet/colorprofile"
 	"github.com/charmbracelet/x/term"
 	"github.com/nxadm/tail"
-	"github.com/qinqd2006/crush/engine/config"
+	"github.com/qinqd2006/crush/crush-agent/config"
 	"github.com/spf13/cobra"
 )
 

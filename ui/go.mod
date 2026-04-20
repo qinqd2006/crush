@@ -14,7 +14,7 @@ require (
 	github.com/aymanbagabas/go-nativeclipboard v0.1.3
 	github.com/aymanbagabas/go-udiff v0.4.1
 	github.com/charmbracelet/colorprofile v0.4.3
-	github.com/qinqd2006/crush/engine v0.0.0
+	qinqd2006github.com/qinqd2006/crush/crush-agent v0.0.0
 	github.com/qinqd2006/crush/infra v0.0.0
 	github.com/qinqd2006/crush/kernel v0.0.0
 	github.com/charmbracelet/ultraviolet v0.0.0-20260416155717-489999b90468

@@ -7,7 +7,7 @@ import (
 	"charm.land/lipgloss/v2"
 	"charm.land/lipgloss/v2/table"
 	"github.com/charmbracelet/x/term"
-	"github.com/qinqd2006/crush/engine/projects"
+	"github.com/qinqd2006/crush/crush-agent/projects"
 	"github.com/spf13/cobra"
 )
 

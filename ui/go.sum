@@ -273,8 +273,8 @@ github.com/mitchellh/mapstructure v1.5.0 h1:jeMsZIYE/09sWLaz43PL7Gy6RuMjD2eJVyua
 github.com/mitchellh/mapstructure v1.5.0/go.mod h1:bFUtVrKA4DC2yAKiSyO/QUcy7e+RRV2QTWOzhPopBRo=
 github.com/modelcontextprotocol/go-sdk v1.5.0 h1:CHU0FIX9kpueNkxuYtfYQn1Z0slhFzBZuq+x6IiblIU=
 github.com/modelcontextprotocol/go-sdk v1.5.0/go.mod h1:gggDIhoemhWs3BGkGwd1umzEXCEMMvAnhTrnbXJKKKA=
-github.com/qinqd2006/crush/engine v0.59.0 h1:6b7pP5tybrlsUFRljmih6YdEuNu9V9Z6t9eeOwxmsQ4=
-github.com/qinqd2006/crush/engine v0.59.0/go.mod h1:aEnjaEcs4S7eg9URZV3oPnrSpOKt42LJsTZ6g/0AMro=
+qinqd2006github.com/qinqd2006/crush/crush-agent v0.59.0 h1:6b7pP5tybrlsUFRljmih6YdEuNu9V9Z6t9eeOwxmsQ4=
+qinqd2006github.com/qinqd2006/crush/crush-agent v0.59.0/go.mod h1:aEnjaEcs4S7eg9URZV3oPnrSpOKt42LJsTZ6g/0AMro=
 github.com/qinqd2006/crush/kernel v0.59.0 h1:ZE1tx6UtFU/LeXJ0C69thx29XvV0Q5YIoD8Lo/fFxjM=
 github.com/qinqd2006/crush/kernel v0.59.0/go.mod h1:ByHQHhUgKi6ISZbam5kzW/enDArkpMCmpcH5GhLIYMs=
 github.com/muesli/cancelreader v0.2.2 h1:3I4Kt4BQjOR54NavqnDogx/MIoWBFa0StPA8ELUXHmA=

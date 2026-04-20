@@ -66,7 +66,7 @@ engine/
 In `ui/common/common.go`:
 ```go
 // Before
-import "github.com/qinqd2006/crush/engine/workspace"
+import "qinqd2006github.com/qinqd2006/crush/crush-agent/workspace"
 
 // After  
 import "github.com/qinqd2006/crush/kernel"
