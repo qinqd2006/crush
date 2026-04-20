@@ -22,26 +22,26 @@ import (
 	fang "charm.land/fang/v2"
 	"charm.land/lipgloss/v2"
 	"github.com/charmbracelet/colorprofile"
-	"github.com/mosaic2025002/crush/engine/adapter"
-	"github.com/mosaic2025002/crush/engine/app"
-	"github.com/mosaic2025002/crush/engine/client"
-	"github.com/mosaic2025002/crush/engine/config"
-	"github.com/mosaic2025002/crush/engine/db"
-	"github.com/mosaic2025002/crush/engine/event"
-	crushlog "github.com/mosaic2025002/crush/engine/log"
-	"github.com/mosaic2025002/crush/engine/projects"
-	"github.com/mosaic2025002/crush/engine/proto"
-	"github.com/mosaic2025002/crush/engine/server"
-	"github.com/mosaic2025002/crush/engine/session"
-	"github.com/mosaic2025002/crush/ui/common"
-	ui "github.com/mosaic2025002/crush/ui/model"
-	"github.com/mosaic2025002/crush/engine/version"
-	"github.com/mosaic2025002/crush/engine/workspace"
 	uv "github.com/charmbracelet/ultraviolet"
 	"github.com/charmbracelet/x/ansi"
 	"github.com/charmbracelet/x/exp/charmtone"
 	xstrings "github.com/charmbracelet/x/exp/strings"
 	"github.com/charmbracelet/x/term"
+	"github.com/qinqd2006/crush/engine/adapter"
+	"github.com/qinqd2006/crush/engine/app"
+	"github.com/qinqd2006/crush/engine/client"
+	"github.com/qinqd2006/crush/engine/config"
+	"github.com/qinqd2006/crush/engine/db"
+	"github.com/qinqd2006/crush/engine/event"
+	crushlog "github.com/qinqd2006/crush/engine/log"
+	"github.com/qinqd2006/crush/engine/projects"
+	"github.com/qinqd2006/crush/engine/proto"
+	"github.com/qinqd2006/crush/engine/server"
+	"github.com/qinqd2006/crush/engine/session"
+	"github.com/qinqd2006/crush/engine/version"
+	"github.com/qinqd2006/crush/engine/workspace"
+	"github.com/qinqd2006/crush/ui/common"
+	ui "github.com/qinqd2006/crush/ui/model"
 	"github.com/spf13/cobra"
 )
 
@@ -136,7 +136,7 @@ crush --continue
 		if _, err := program.Run(); err != nil {
 			event.Error(err)
 			slog.Error("TUI run error", "error", err)
-			return errors.New("Crush crashed. If metrics are enabled, we were notified about it. If you'd like to report it, please copy the stacktrace above and open an issue at https://github.com/mosaic2025002/crush/issues/new?template=bug.yml") //nolint:staticcheck
+			return errors.New("Crush crashed. If metrics are enabled, we were notified about it. If you'd like to report it, please copy the stacktrace above and open an issue at https://github.com/qinqd2006/crush/issues/new?template=bug.yml") //nolint:staticcheck
 		}
 		return nil
 	},

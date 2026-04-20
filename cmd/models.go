@@ -9,8 +9,8 @@ import (
 
 	"charm.land/catwalk/pkg/catwalk"
 	"charm.land/lipgloss/v2/tree"
-	"github.com/mosaic2025002/crush/engine/config"
 	"github.com/mattn/go-isatty"
+	"github.com/qinqd2006/crush/engine/config"
 	"github.com/spf13/cobra"
 )
 

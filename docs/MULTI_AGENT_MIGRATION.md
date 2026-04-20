@@ -66,10 +66,10 @@ engine/
 In `ui/common/common.go`:
 ```go
 // Before
-import "github.com/mosaic2025002/crush/engine/workspace"
+import "github.com/qinqd2006/crush/engine/workspace"
 
 // After  
-import "github.com/mosaic2025002/crush/kernel"
+import "github.com/qinqd2006/crush/kernel"
 ```
 
 However, `kernel.Workspace` and `engine/workspace.Workspace` have different method signatures:

@@ -1,8 +1,10 @@
-module github.com/mosaic2025002/crush/engine
+module github.com/qinqd2006/crush/engine
 
 go 1.26.2
 
 require (
+	github.com/qinqd2006/crush/infra v0.0.0
+	github.com/qinqd2006/crush/kernel v0.0.0
 	charm.land/bubbletea/v2 v2.0.6
 	charm.land/catwalk v0.37.0
 	charm.land/fantasy v0.18.0
@@ -29,7 +31,6 @@ require (
 	github.com/itchyny/gojq v0.12.19
 	github.com/joho/godotenv v1.5.1
 	github.com/modelcontextprotocol/go-sdk v1.5.0
-	github.com/mosaic2025002/crush/kernel v0.59.0
 	github.com/ncruces/go-sqlite3 v0.33.3
 	github.com/posthog/posthog-go v1.11.2
 	github.com/pressly/goose/v3 v3.27.0

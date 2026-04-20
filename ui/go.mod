@@ -1,4 +1,4 @@
-module github.com/mosaic2025002/crush/ui
+module github.com/qinqd2006/crush/ui
 
 go 1.26.2
 
@@ -14,6 +14,9 @@ require (
 	github.com/aymanbagabas/go-nativeclipboard v0.1.3
 	github.com/aymanbagabas/go-udiff v0.4.1
 	github.com/charmbracelet/colorprofile v0.4.3
+	github.com/qinqd2006/crush/engine v0.0.0
+	github.com/qinqd2006/crush/infra v0.0.0
+	github.com/qinqd2006/crush/kernel v0.0.0
 	github.com/charmbracelet/ultraviolet v0.0.0-20260416155717-489999b90468
 	github.com/charmbracelet/x/ansi v0.11.7
 	github.com/charmbracelet/x/editor v0.2.0
@@ -30,8 +33,6 @@ require (
 	github.com/gen2brain/beeep v0.11.2
 	github.com/jordanella/go-ansi-paintbrush v0.0.0-20240728195301-b7ad996ecf3d
 	github.com/lucasb-eyer/go-colorful v1.4.0
-	github.com/mosaic2025002/crush/engine v0.59.0
-	github.com/mosaic2025002/crush/kernel v0.59.0
 	github.com/pkg/browser v0.0.0-20240102092130-5ac0b6a4141c
 	github.com/rivo/uniseg v0.4.7
 	github.com/sahilm/fuzzy v0.1.1

@@ -1,4 +1,4 @@
-module github.com/mosaic2025002/crush
+module github.com/qinqd2006/crush
 
 go 1.26.2
 
@@ -18,8 +18,9 @@ require (
 	github.com/invopop/jsonschema v0.13.0
 	github.com/joho/godotenv v1.5.1
 	github.com/mattn/go-isatty v0.0.21
-	github.com/mosaic2025002/crush/engine v0.59.0
-	github.com/mosaic2025002/crush/ui v0.59.0
+	github.com/qinqd2006/crush/engine v0.59.0
+	github.com/qinqd2006/crush/infra v0.59.0
+	github.com/qinqd2006/crush/ui v0.59.0
 	github.com/nxadm/tail v1.4.11
 	github.com/pkg/browser v0.0.0-20240102092130-5ac0b6a4141c
 	github.com/spf13/cobra v1.10.2
@@ -138,7 +139,7 @@ require (
 	github.com/microcosm-cc/bluemonday v1.0.27 // indirect
 	github.com/mitchellh/mapstructure v1.5.0 // indirect
 	github.com/modelcontextprotocol/go-sdk v1.5.0 // indirect
-	github.com/mosaic2025002/crush/kernel v0.59.0 // indirect
+	github.com/qinqd2006/crush/kernel v0.59.0 // indirect
 	github.com/muesli/cancelreader v0.2.2 // indirect
 	github.com/muesli/mango v0.1.0 // indirect
 	github.com/muesli/mango-cobra v1.2.0 // indirect

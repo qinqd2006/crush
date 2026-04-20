@@ -9,14 +9,14 @@ import (
 
 	"charm.land/lipgloss/v2"
 	"github.com/atotto/clipboard"
-	hyperp "github.com/mosaic2025002/crush/engine/agent/hyper"
-	"github.com/mosaic2025002/crush/engine/client"
-	"github.com/mosaic2025002/crush/engine/config"
-	"github.com/mosaic2025002/crush/engine/oauth"
-	"github.com/mosaic2025002/crush/engine/oauth/copilot"
-	"github.com/mosaic2025002/crush/engine/oauth/hyper"
 	"github.com/charmbracelet/x/ansi"
 	"github.com/pkg/browser"
+	hyperp "github.com/qinqd2006/crush/engine/agent/hyper"
+	"github.com/qinqd2006/crush/engine/client"
+	"github.com/qinqd2006/crush/engine/config"
+	"github.com/qinqd2006/crush/engine/oauth"
+	"github.com/qinqd2006/crush/engine/oauth/copilot"
+	"github.com/qinqd2006/crush/engine/oauth/hyper"
 	"github.com/spf13/cobra"
 )
 
